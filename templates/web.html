@@ -32,7 +32,8 @@
         <!-- loginpopup Script -->      
         <script  src="js/loginPopUpScript.js"></script>
   
-
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+        <script src="https://apis.google.com/js/api:client.js"></script>      
 
     </head>
     
@@ -101,9 +102,29 @@
             
                   <div class="text-center text-muted delimiter">or use a social network</div>
                   <div class="d-flex justify-content-center social-buttons">
-                    <button type="button" class="btn btn-round" data-toggle="tooltip" data-placement="top" title="Google">
+                    <div id="gSignInWrapper">
+                    <button id="customBtn" type="button" class="btn btn-round customGPlusSignIn" data-toggle="tooltip" data-placement="top" title="Google" data-onsuccess="onSignIn">
+                        <script>
+                            function onSignIn(googleUser) {
+                                var profile = googleUser.getBasicProfile();
+                                console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+                                console.log('Name: ' + profile.getName());
+                                console.log('Image URL: ' + profile.getImageUrl());
+                                console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+                              }      
+                            </script>  
                       <i class="fab fa-google"></i>
                     </button>
+                    </div>
+                    <a href="#" onclick="signOut();">Sign out</a>
+                    <script>
+                    function signOut() {
+                        var auth2 = gapi.auth2.getAuthInstance();
+                        auth2.signOut().then(function () {
+                        console.log('User signed out.');
+                        });
+                    }
+                    </script>
                     <button type="button" class="btn btn-round" data-toggle="tooltip" data-placement="top" title="Facebook">
                       <i class="fab fa-facebook"></i>
                     </button>
@@ -118,7 +139,7 @@
               </div>
             </div>
           </div>
-        </div>        
+        </div>
     
 
         <!-- About-->
@@ -311,5 +332,36 @@
         <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
         <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
 
+        <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+        <script>
+            var googleUser = {};
+            var startApp = function() {
+              gapi.load('auth2', function(){
+                // Retrieve the singleton for the GoogleAuth library and set up the client.
+                auth2 = gapi.auth2.init({
+                  client_id: '646126340077-6k8ec87qps4dua2s0blbj05l70ubp4m0.apps.googleusercontent.com',
+                  cookiepolicy: 'single_host_origin',
+                  // Request scopes in addition to 'profile' and 'email'
+                  //scope: 'additional_scope'
+                });
+                attachSignin(document.getElementById('customBtn'));
+              });
+            };
+          
+            function attachSignin(element) {
+              auth2.attachClickHandler(element, {},
+                  function(googleUser) {
+                    var profile = googleUser.getBasicProfile();
+                    console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+                    console.log('Name: ' + profile.getName());
+                    console.log('Image URL: ' + profile.getImageUrl());
+                    console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+                  }, function(error) {
+                    alert(JSON.stringify(error, undefined, 2));
+                  });
+            }
+            </script>
+            <script>startApp();</script>
     </body>
 </html>
