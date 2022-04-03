@@ -5,7 +5,7 @@ comm = Flask(__name__)
 
 @comm.route('/')
 def my_form():
-    return render_template('some.html')
+    return render_template('web.html')
     # return render_template('ss.html')
 
 @comm.route('/', methods=['POST'])
