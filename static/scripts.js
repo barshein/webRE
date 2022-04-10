@@ -313,3 +313,42 @@ function FillAttachmentArray(e, readerEvt) {
   };
   arrCounter = arrCounter + 1;
 }
+
+function signOut() {
+  var auth2 = gapi.auth2.getAuthInstance();
+  auth2.signOut().then(function () {
+  const listItem = document.getElementById("logoutButton");
+  const loginItem = document.createElement('li');
+  loginItem.setAttribute("id", "loginButton");
+  loginItem.innerHTML = '<a type="button" class="navbar-brand" data-toggle="modal" data-target="#loginModal">Login</a>';
+  listItem.replaceWith(loginItem); 
+  console.log('User signed out.');
+  });
+}
+
+function generalLogin() {
+  const listItem = document.getElementById("loginButton");
+  const loginItem = document.createElement('li');
+  loginItem.innerHTML = '<a type="button" class="navbar-brand" data-toggle="modal" data-target="#loginModal">Login</a>';
+  
+  const newItem = document.createElement('li');
+  newItem.setAttribute("id", "logoutButton");
+  newItem.innerHTML = '<a type="button" class="navbar-brand" onclick="signOut();">Sign out</a>'
+  listItem.parentNode.replaceChild(newItem, listItem); 
+}
+
+var loginWay;
+function attachSignin(element) {
+  auth2.attachClickHandler(element, {},
+      function(googleUser) {
+        var profile = googleUser.getBasicProfile();
+        console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+        console.log('Name: ' + profile.getName());
+        console.log('Image URL: ' + profile.getImageUrl());
+        console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+        loginWay = 'Google';
+        generalLogin()
+      }, function(error) {
+        alert(JSON.stringify(error, undefined, 2));
+      });
+}

@@ -57,7 +57,7 @@
                         <li class="nav-item"><a class="nav-link" href="#signup">Contact</a></li>
                     </ul>
                     <ul class="navbar-nav ms-auto">
-                        <li type="button" class="navbar-brand" data-toggle="modal" data-target="#loginModal">Login</a></li>
+                        <li id="loginButton"><a type="button" class="navbar-brand" data-toggle="modal" data-target="#loginModal">Login</a></li>
                     </ul>
                 </div>
             </div>
@@ -116,15 +116,6 @@
                       <i class="fab fa-google"></i>
                     </button>
                     </div>
-                    <a href="#" onclick="signOut();">Sign out</a>
-                    <script>
-                    function signOut() {
-                        var auth2 = gapi.auth2.getAuthInstance();
-                        auth2.signOut().then(function () {
-                        console.log('User signed out.');
-                        });
-                    }
-                    </script>
                     <button type="button" class="btn btn-round" data-toggle="tooltip" data-placement="top" title="Facebook">
                       <i class="fab fa-facebook"></i>
                     </button>
@@ -345,20 +336,8 @@
                 attachSignin(document.getElementById('customBtn'));
               });
             };
-          
-            function attachSignin(element) {
-              auth2.attachClickHandler(element, {},
-                  function(googleUser) {
-                    var profile = googleUser.getBasicProfile();
-                    console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-                    console.log('Name: ' + profile.getName());
-                    console.log('Image URL: ' + profile.getImageUrl());
-                    console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-                  }, function(error) {
-                    alert(JSON.stringify(error, undefined, 2));
-                  });
-            }
-            </script>
-            <script>startApp();</script>
+        </script>
+        <script>startApp();</script>
+
     </body>
 </html>
