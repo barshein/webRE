@@ -33,7 +33,8 @@
         <!-- Core theme JS-->
         <script src="static/scripts.js"></script>
         <script src="https://apis.google.com/js/api:client.js"></script> 
-  
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 
     </head>
     
@@ -214,7 +215,7 @@
                         </form>
                         <br>
                         <div id="sendDataDiv">
-                            <button type="submit" class="btn btn-primary btn-imgs">Send!</button>
+                            <button type="submit" class="btn btn-primary btn-imgs" onclick="sendOnClick()">Send!</button>
                         </div>
 
                         <p class="text-white-50">
@@ -225,7 +226,13 @@
                 </div>
             </div>
         </section> 
-       
+
+        <div class="hidden" id="ResponseBanner">
+            <section class="projects-section text-center">
+                <h2>Response: </h2>
+                <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
+            </section> 
+        </div>
 
         <!-- Signup-->
         <section class="signup-section" id="signup">
