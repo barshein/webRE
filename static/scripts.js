@@ -331,6 +331,14 @@ function signOut() {
   });
 }
 
+var signOutHTML = '                    <div class="dropdown">'+
+'<a href="#" class="navbar-brand dropdown-toggle" data-bs-toggle="dropdown">Hello</a>'+
+'<div class="dropdown-menu">'+
+'    <a href="#" class="dropdown-item" onclick="signOut();">Sign Out</a>'+
+'    <a href="#" class="dropdown-item">Another action</a>'+
+'</div>'+
+'</div>';
+
 function generalLogin() {
   const listItem = document.getElementById("loginButton");
   const loginItem = document.createElement('li');
@@ -338,7 +346,7 @@ function generalLogin() {
   
   const newItem = document.createElement('li');
   newItem.setAttribute("id", "logoutButton");
-  newItem.innerHTML = '<a type="button" class="navbar-brand" onclick="signOut();">Sign out</a>'
+  newItem.innerHTML = signOutHTML;
   listItem.parentNode.replaceChild(newItem, listItem); 
 }
 
