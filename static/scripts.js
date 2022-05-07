@@ -331,21 +331,37 @@ function signOut() {
   });
 }
 
-var signOutHTML = '                    <div class="dropdown">'+
-'<a href="#" class="navbar-brand dropdown-toggle" data-bs-toggle="dropdown">Hello</a>'+
-'<div class="dropdown-menu">'+
-'    <a href="#" class="dropdown-item" onclick="signOut();">Sign Out</a>'+
-'    <a href="#" class="dropdown-item">Another action</a>'+
-'</div>'+
-'</div>';
-
-function generalLogin() {
+function generalLogin(loggedName) {
   const listItem = document.getElementById("loginButton");
   const loginItem = document.createElement('li');
   loginItem.innerHTML = '<a type="button" class="navbar-brand" data-toggle="modal" data-target="#loginModal">Login</a>';
   
   const newItem = document.createElement('li');
   newItem.setAttribute("id", "logoutButton");
+  var signOutHTML;
+  if (loggedName != undefined) {
+    loggedName = ', '+loggedName;
+    signOutHTML = '                    <div class="dropdown">'+
+'<a href="#" class="navbar-brand dropdown-toggle" data-bs-toggle="dropdown">Hello'+
+loggedName+
+'</a>'+
+'<div class="dropdown-menu">'+
+'    <a href="#" class="dropdown-item" onclick="signOut();">Sign Out</a>'+
+'    <a href="#" class="dropdown-item">Another action</a>'+
+'</div>'+
+'</div>';
+  } 
+  
+  else{
+    signOutHTML = '                    <div class="dropdown">'+
+'<a href="#" class="navbar-brand dropdown-toggle" data-bs-toggle="dropdown">Hello'+
+'</a>'+
+'<div class="dropdown-menu">'+
+'    <a href="#" class="dropdown-item" onclick="signOut();">Sign Out</a>'+
+'    <a href="#" class="dropdown-item">Another action</a>'+
+'</div>'+
+'</div>';
+  }
   newItem.innerHTML = signOutHTML;
   listItem.parentNode.replaceChild(newItem, listItem); 
 }
@@ -360,7 +376,8 @@ function attachSignin(element) {
         console.log('Image URL: ' + profile.getImageUrl());
         console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
         loginWay = 'Google';
-        generalLogin()
+        var loggedName = profile.getName();
+        generalLogin(loggedName)
       }, function(error) {
         alert(JSON.stringify(error, undefined, 2));
       });
