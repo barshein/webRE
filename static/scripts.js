@@ -89,9 +89,19 @@ window.onload = function() {
     document.getElementById("sendDataDiv").style.visibility = 'hidden';
 }
 
+var loginWay;
 function sendOnClick() {
-  document.getElementById("ResponseBanner").className = '';
-  loadBanner();
+  console.log("here")
+  if (loginWay != null) {
+    document.getElementById("ResponseBanner").className = '';
+    loadBanner();
+  }
+  else {
+    var myModal = new bootstrap.Modal(document.getElementById('loginModal'))
+    myModal.show()
+    // document.getElementById("loginButton").click();
+    console.log("The user is not logged in")
+  }
 }
 
 //I added event handler for the file upload control to access the files properties.
@@ -364,7 +374,6 @@ loggedName+
   listItem.parentNode.replaceChild(newItem, listItem); 
 }
 
-var loginWay;
 function attachSignin(element) {
   auth2.attachClickHandler(element, {},
       function(googleUser) {
