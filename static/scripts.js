@@ -91,7 +91,6 @@ window.onload = function() {
 
 var loginWay;
 function sendOnClick() {
-  console.log("here")
   if (loginWay != null) {
     document.getElementById("ResponseBanner").className = '';
     loadBanner();
