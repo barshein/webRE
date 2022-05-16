@@ -383,6 +383,16 @@ function attachSignin(element) {
       });
 }
 
+function signupForm() {
+  userName = document.getElementById("username2").value;
+  password = document.getElementById("password2").value;
+  name = document.getElementById("name2").value;
+  email = document.getElementById("email2").value;
+  console.log("signup info: {username:", userName,", password:", password,", name:", name,", email:", email,"}")
+  // TODO: check if username or email already exists (from DB)
+  // TODO: save the data to the DB (also generate ID)
+}
+
 function loadBanner() {
   var xyValues = [
     {x:50, y:7},

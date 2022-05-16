@@ -120,12 +120,51 @@
                 </div>
               </div>
                 <div class="modal-footer d-flex justify-content-center">
-                <div>Not a member yet? <a href="#a" class="text-info"> Sign Up</a>.</div>
+                <div>Not a member yet? <a href="#a" class="text-info" data-toggle="modal" data-target="#signupModal"> Sign Up</a>.</div>
               </div>
             </div>
           </div>
         </div>        
-    
+
+        <!-- Sign Up -->
+        <div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="exapleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header border-bottom-0">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="form-title text-center">
+                    <h4>Sign Up</h4>
+                    <h5>Real Estate predictions</h5>
+                  </div>
+                  <div class="d-flex flex-column text-center">
+                    <form id="signupForm">
+                      <div class="form-group">
+                        <input type="username" class="form-control" id="username2" placeholder="Your username...">
+                      </div>    
+                      <div class="form-group">
+                        <input type="password" class="form-control" id="password2" placeholder="Your password...">
+                      </div>
+                      <div class="form-group">
+                        <input type="name" class="form-control" id="name2" placeholder="Your name...">
+                      </div>
+                      <div class="form-group">
+                        <input type="email" class="form-control" id="email2" placeholder="Your email address...">
+                      </div>
+                      <button type="button" class="btn btn-primary btn-block" onclick="signupForm()">Sign Up</button>
+                    </form>
+                  </div>
+                </div>
+                  <div class="modal-footer d-flex justify-content-center">
+                  <div>You can Sign in now!</div>
+                </div>
+              </div>
+            </div>
+          </div>        
+  
 
         <!-- About-->
         <section class="projects-section bg-light" id="about">
