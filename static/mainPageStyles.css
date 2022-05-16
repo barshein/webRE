@@ -11801,9 +11801,7 @@ ul.thumb-Images li {
 .selectionParent {
   margin: auto;
   display: grid; 
-  grid-template-columns: repeat(2, 50%); 
   grid-gap: 20px; 
-  width: 100%; 
 }
 .uploadDescriptionDiv {
   text-align: center;
@@ -11853,3 +11851,31 @@ ul.thumb-Images li {
   padding: 0.3rem 0rem;
 }
 /*______*/
+
+.container-grid {
+  display: grid;
+  grid-template-columns: 40% 10% 10% 40%;
+  grid-template-rows: 78% 4% 18%;
+  grid-auto-flow: row;
+}
+
+.item-Description {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row-start: 1;
+  grid-row-end: 2;
+}
+
+.item-images {
+  grid-column-start: 3;
+  grid-column-end: 5;
+  grid-row-start: 1;
+  grid-row-end: 2;
+}
+
+.item-sendButton {
+  grid-column-start: 2;
+  grid-column-end: 4;
+  grid-row-start: 3;
+  grid-row-end: 4;
+}

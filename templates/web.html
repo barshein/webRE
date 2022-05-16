@@ -229,27 +229,33 @@
                             <label class="btn btn-outline-primary" for="btncheck2">Images</label>
                         </div>
                         <form action="" class='selectionParent' method="POST">
-
-                            <div id='uploadDescriptionDiv' class="uploadDescriptionDiv1">
-                                <textarea class="form-control rounded-0 description" id="exampleFormControlTextarea1" rows="5"  name="descriptionText"></textarea>
-                            </div>                        
-
-                            <div id='uploadImagesDiv' class="uploadImagesDiv1">
-                                <!--To give the control a modern look, I have applied a stylesheet in the parent span.-->
-                                <span class="btn btn-imgs btn-primary fileinput-button-imgs">
-                                <span>Upload Images</span>
-                                <input type="file" name="files[]" id="files" multiple accept="image/*,"><br />
-                                </span>
-                                <br>
-                                <br>
-                                <output id="Filelist" name="photosInfo"></output>
-                            </div>    
-                            <br>
-                            <div id="sendDataDiv">
-                                <button type="submit" class="btn btn-primary btn-imgs" onclick="sendOnClick()">Send!</button>
+                        <section class="container-grid">
+                            <div class="item-Description">
+                                <div id='uploadDescriptionDiv' class="uploadDescriptionDiv1">
+                                    <textarea class="form-control rounded-0 description" id="exampleFormControlTextarea1" rows="5"  name="descriptionText"></textarea>
+                                </div>                            
                             </div>
+                            <div class="item-images">
+                                <div id='uploadImagesDiv' class="uploadImagesDiv1">
+                                    <!--To give the control a modern look, I have applied a stylesheet in the parent span.-->
+                                    <span class="btn btn-imgs btn-primary fileinput-button-imgs">
+                                    <span>Upload Images</span>
+                                    <input type="file" name="files[]" id="files" multiple accept="image/*,"><br />
+                                    </span>
+                                    <br>
+                                    <br>
+                                    <output id="Filelist" name="photosInfo"></output>
+                                </div>        
+                            </div>
+                            <div class="item-sendButton">
+                                <div id="sendDataDiv">
+                                    <button type="submit" class="btn btn-primary btn-imgs" onclick="sendOnClick()">Send!</button>
+                                </div>
+                            </div>
+                          </section>
                         </form>
-
+                        <br>
+                        
                         <p class="text-white-50">
                             When choosing description you will be able to insert the ...... of the house and get feedback ...
                             Grayscale is a free Bootstrap theme created by Start Bootstrap. It can be yours right now, simply download the template on
