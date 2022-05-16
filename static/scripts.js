@@ -347,7 +347,6 @@ loggedName+
 '</a>'+
 '<div class="dropdown-menu">'+
 '    <a href="#" class="dropdown-item" onclick="signOut();">Sign Out</a>'+
-'    <a href="#" class="dropdown-item">Another action</a>'+
 '</div>'+
 '</div>';
   } 
@@ -358,7 +357,6 @@ loggedName+
 '</a>'+
 '<div class="dropdown-menu">'+
 '    <a href="#" class="dropdown-item" onclick="signOut();">Sign Out</a>'+
-'    <a href="#" class="dropdown-item">Another action</a>'+
 '</div>'+
 '</div>';
   }
