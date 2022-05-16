@@ -391,6 +391,26 @@ function signupForm() {
   // TODO: save the data to the DB (also generate ID)
 }
 
+function verifyLogin() {
+  return false;
+}
+
+function loginForm() {
+  userName = document.getElementById("username1").value;
+  password = document.getElementById("password1").value;
+  console.log("sign in info: {username:", userName,", password:", password,"}")
+  loginWay = 'Local'
+  // TODO: verify login
+  if (verifyLogin(userName, password)) {
+    // TODO: change logged name to be the name that appears in the DB (instead of username)
+    var loggedName = userName;
+    generalLogin(loggedName)  
+  }
+  else {
+    document.getElementById("usernameOrPasswordIncorrect").className = '';
+  }
+}
+
 function loadBanner() {
   var xyValues = [
     {x:50, y:7},
