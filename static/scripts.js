@@ -401,7 +401,7 @@ function signupForm() {
 }
 
 function verifyLogin() {
-  return false;
+  return true;
 }
 
 function loginForm() {
