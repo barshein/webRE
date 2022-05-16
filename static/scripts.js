@@ -338,6 +338,7 @@ function signOut() {
   listItem.replaceWith(loginItem); 
   console.log('User signed out.');
   });
+  loginWay = ""
 }
 
 function generalLogin(loggedName) {
@@ -348,7 +349,7 @@ function generalLogin(loggedName) {
   const newItem = document.createElement('li');
   newItem.setAttribute("id", "logoutButton");
   var signOutHTML;
-  if (loggedName != undefined) {
+  if (loggedName != undefined && loggedName != "") {
     loggedName = ', '+loggedName;
     signOutHTML = '                    <div class="dropdown">'+
 '<a href="#" class="navbar-brand dropdown-toggle" data-bs-toggle="dropdown">Hello'+
