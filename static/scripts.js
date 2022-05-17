@@ -95,11 +95,15 @@ function sendOnClick() {
   if (loginWay != null) {
     var formData = new FormData();
     formData.append('descriptionText', document.getElementById('descriptionFromUser').value)
-    for (var i = 0, f; (f = files[i]); i++) {
-      formData.append('photosInfo', f)
+    if (typeof(files) != 'undefined') {
+      if (files.size != 0) {
+        for (var i = 0, f; (f = files[i]); i++) {
+          formData.append('photosInfo', f)
+        }
+        console.log(formData.getAll('photosInfo'))  
+      }
     }
     console.log(formData.getAll('descriptionText'))
-    console.log(formData.getAll('photosInfo'))
 
     const Http = new XMLHttpRequest();
     const url = '/';
