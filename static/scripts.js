@@ -95,9 +95,11 @@ function sendOnClick() {
   if (loginWay != null) {
     var formData = new FormData();
     formData.append('descriptionText', document.getElementById('descriptionFromUser').value)
-    formData.append('photosInfo', document.getElementById('files').value)
+    for (var i = 0, f; (f = files[i]); i++) {
+      formData.append('photosInfo', f)
+    }
     console.log(formData.getAll('descriptionText'))
-    console.log(files)
+    console.log(formData.getAll('photosInfo'))
 
     const Http = new XMLHttpRequest();
     const url = '/';
@@ -106,7 +108,7 @@ function sendOnClick() {
 
     Http.onreadystatechange = (e) => {
       if(Http.readyState === XMLHttpRequest.DONE) {
-        console.log(Http.responseText)
+        console.log("response from server is:", Http.responseText)
         document.getElementById("ResponseBanner").className = '';
         loadDescriptionBanner(Http);
       }
@@ -438,7 +440,6 @@ function loginForm() {
 }
 
 function loadDescriptionBanner(response) {
-  console.log(response,"hey")
   grammarDescriptionGrade = "The Grammar grade for the uploaded description is: "+response.responseText
   document.getElementById("descriptionGrammarGrade").textContent = grammarDescriptionGrade
   loadDescriptionChart();
