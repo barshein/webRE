@@ -105,11 +105,12 @@ function sendOnClick() {
     Http.send(formData);
 
     Http.onreadystatechange = (e) => {
-      console.log(Http.responseText)
+      if(Http.readyState === XMLHttpRequest.DONE) {
+        console.log(Http.responseText)
+        document.getElementById("ResponseBanner").className = '';
+        loadDescriptionBanner(Http);
+      }
     }
-
-    document.getElementById("ResponseBanner").className = '';
-    loadBanner();
   }
   else {
     var myModal = new bootstrap.Modal(document.getElementById('loginModal'))
@@ -436,7 +437,14 @@ function loginForm() {
   }
 }
 
-function loadBanner() {
+function loadDescriptionBanner(response) {
+  console.log(response,"hey")
+  grammarDescriptionGrade = "The Grammar grade for the uploaded description is: "+response.responseText
+  document.getElementById("descriptionGrammarGrade").textContent = grammarDescriptionGrade
+  loadDescriptionChart();
+}
+
+function loadDescriptionChart() {
   var xyValues = [
     {x:50, y:7},
     {x:60, y:8},
