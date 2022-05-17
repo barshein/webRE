@@ -321,7 +321,7 @@ function sendOnClick() {
         for (var i = 0, f; (f = files[i]); i++) {
           formData.append('photosInfo', f)
         }
-        console.log(formData.getAll('photosInfo'))  
+        console.log(formData.getAll('photosInfo'))
       }
     }
     console.log(formData.getAll('descriptionText'))
@@ -690,7 +690,7 @@ function verifyLogin(email, password) {
       if (Http.responseText != 0) {
         // when server is ready : chaneg logged name to Http.responseText
         var loggedName = email;
-        generalLogin(loggedName, email)  
+        generalLogin(loggedName, email)
         loginWay = 'Local'
         return true;
       }
@@ -830,14 +830,14 @@ function DivCreator(values, modelName) {
   span.textContent = gradeNumber + "%"
   if (modelName == "Brightness") {
     span.style.color = colorBrightnessGradeDecider(gradeNumber);
-  } 
+  }
   else {
     if (modelName == "Mess") {
       span.style.color = colorMessGradeDecider(gradeNumber);
     }
     else {
       span.style.color = colorGradeDecider(gradeNumber);
-    }  
+    }
   }
   var comment = document.createElement("p");
   comment.textContent = commentValue;
@@ -1000,22 +1000,22 @@ function createImagesChart(response, imagesLabels, brightnessGrades, messGrades,
     type: "line",
     data: {
       labels: imagesLabels,
-      datasets: [{ 
+      datasets: [{
           data: brightnessGrades,
           label: "Brightness Grades",
           borderColor: "#8e5ea2",
           fill: false
-        }, { 
+        }, {
           data: messGrades,
           label: "Mess Grades",
           borderColor: "#3cba9f",
           fill: false
-        }, { 
+        }, {
           data: triqGrades,
           label: "Triq Grades",
           borderColor: "#c45850",
           fill: false
-        }, { 
+        }, {
           data: qualityGrades,
           label: "Quality Grades",
           borderColor: "#3e95cd",

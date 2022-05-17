@@ -9,6 +9,7 @@ comm = Flask(__name__)
 # main web page with all additional data (img, css..)
 @comm.route('/', methods =["GET"])
 def my_form():
+    print("111")
     return render_template('web.html')
 
 @comm.route('/#Service')
@@ -32,11 +33,11 @@ def sendServiceInfo():
     print("send to api")
     res = requests.post("http://127.0.0.1:5050/serviceFlowTemp", json={'str': 'datatata'})
     print(res)
-    print(str(res))
-    print(res.text)
-    print(str(res.text))
-    return str(res.text)
+    data = {'randnum': res}
+    return render_template('web.html', data=data)
 
+def start():
+    comm.run(port=8000, debug=False, threaded=True)
 
 if __name__ == "__main__":
     print("communicationServer up in port: 8000")

@@ -1,6 +1,5 @@
 from flask import Flask, request
 import requests
-import common
 api = Flask(__name__)
 
 def saveTextInDB(data):
