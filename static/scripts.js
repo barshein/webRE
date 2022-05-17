@@ -89,9 +89,25 @@ window.onload = function() {
     document.getElementById("sendDataDiv").style.visibility = 'hidden';
 }
 
+var files;
 var loginWay;
 function sendOnClick() {
   if (loginWay != null) {
+    var formData = new FormData();
+    formData.append('descriptionText', document.getElementById('descriptionFromUser').value)
+    formData.append('photosInfo', document.getElementById('files').value)
+    console.log(formData.getAll('descriptionText'))
+    console.log(files)
+
+    const Http = new XMLHttpRequest();
+    const url = '/';
+    Http.open("POST", url);
+    Http.send(formData);
+
+    Http.onreadystatechange = (e) => {
+      console.log(Http.responseText)
+    }
+
     document.getElementById("ResponseBanner").className = '';
     loadBanner();
   }
@@ -133,7 +149,7 @@ function handleFileSelect(e) {
   if (!e.target.files) return;
 
   //To obtaine a File reference
-  var files = e.target.files;
+  files = e.target.files;
 
   // Loop through the FileList and then to render image files as thumbnails.
   for (var i = 0, f; (f = files[i]); i++) {
