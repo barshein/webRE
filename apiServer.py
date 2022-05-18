@@ -1,5 +1,7 @@
 from flask import Flask, request
 import requests
+from mongodb import add_data
+import base64
 api = Flask(__name__)
 
 def saveTextInDB(data):
@@ -27,8 +29,17 @@ def buildURL(haveText, havePhoto):
 
 @api.route('/serviceFlowTemp', methods=['POST'])
 def serviceFlowTemp():
-    print(request.get_json())
+    json = request.get_json()
     print("send to be")
+    # description = json["description"]
+    # photos = []
+    # for k in json["photos"].keys():
+    #     photos.append([k, base64.b64decode(json["photos"][k])])
+    #
+    # for photo in photos:
+    #     with open("static/uploads/" + photo[0], "wb") as f:
+    #         f.write(photo[1])
+    add_data(json)
     res = requests.post("http://127.0.0.1:4040/analyzeText", json={'sr': 'data2'})
     print(res)
     print(res.text)

@@ -1,6 +1,8 @@
 from flask import Flask, render_template, send_from_directory
 from flask import request
 import requests
+import os
+import base64
 from waitress import serve
 
 comm = Flask(__name__)
@@ -26,15 +28,18 @@ def static_dir(path):
 def sendServiceInfo():
     if request.method == "POST":
        description = request.form.get("descriptionText")
-       photos = request.form.get("photosInfo")
-       # if photos != NoneType:
-       #     print(photos.size())
-       print(description)
+       photos = list(request.files.listvalues())[0]
+       json = {}
+       json["description"] = description
+       json["photos"] = {}
+       for photo in photos:
+           json["photos"][photo.filename] = base64.b64encode(photo.stream.read()).decode("utf8")
+           # photo.save(os.path.join("static/uploads", photo.filename))
+
     print("send to api")
-    res = requests.post("http://127.0.0.1:5050/serviceFlowTemp", json={'str': 'datatata'})
+    res = requests.post("http://127.0.0.1:5050/serviceFlowTemp", json=json)
     print(res)
-    data = {'randnum': res}
-    return render_template('web.html', data=data)
+    return res.text
 
 def start():
     comm.run(port=8000, debug=False, threaded=True)
