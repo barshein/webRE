@@ -34,7 +34,8 @@ def get_issues() :
     mistakes = get_mistakes()
     for mistake in mistakes :
         issues_set.add(mistake.message)
-    return issues_set
+    issues_list = list(issues_set)
+    return issues_list
 
 def text_model(description) :
     initialize(description)
