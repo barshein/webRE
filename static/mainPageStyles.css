@@ -11914,3 +11914,9 @@ ul.thumb-Images li {
   text-align: center;
   width: 50px;
 }
+
+.canvas-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
