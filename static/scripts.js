@@ -92,7 +92,7 @@ window.onload = function() {
 var files;
 var loginWay;
 function sendOnClick() {
-  if (loginWay != null) {
+  if (loginWay != null && loginWay != "") {
     var formData = new FormData();
     formData.append('descriptionText', document.getElementById('descriptionFromUser').value)
     if (typeof(files) != 'undefined') {
