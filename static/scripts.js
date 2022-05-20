@@ -229,7 +229,10 @@ function sendOnClick() {
       if(Http.readyState === XMLHttpRequest.DONE) {
         console.log("response from server is:", Http.responseText)
         document.getElementById("ResponseBanner").className = '';
-        loadDescriptionBanner(Http);
+        if (descriptionFromUser != "undefined" && descriptionFromUser != "") {
+          document.getElementById("descriptionAccordion").className = 'accordion-item';
+          loadDescriptionBanner(Http);
+        }
       }
     }
   }
