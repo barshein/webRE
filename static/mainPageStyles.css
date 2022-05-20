@@ -11879,3 +11879,38 @@ ul.thumb-Images li {
   grid-row-start: 3;
   grid-row-end: 4;
 }
+
+.boxed {
+  border: 1px solid green ;
+}
+
+.descriptionAnalysis-grid {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  /* grid-template-rows: 78% 4% 18%; */
+  grid-auto-flow: row;
+}
+
+.grammarAnalysis-grid {
+  grid-column-start: 1;
+  grid-column-end: 2;
+}
+
+.semanticAnalysis-grid {
+  grid-column-start: 2;
+  grid-column-end: 3;
+}
+
+.circle {
+  background: #e3e3e3;
+  border-radius: 50%;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  color: #6e6e6e;
+  display: inline-block;
+  font-weight: bold;
+  line-height: 50px;
+  margin-right: 5px;
+  text-align: center;
+  width: 50px;
+}

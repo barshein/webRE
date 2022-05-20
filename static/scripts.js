@@ -7,6 +7,119 @@
 // Scripts
 // 
 
+
+// TODO: delete
+resp = {
+  "num_of_images": -1,
+  "i_bright_rate": [
+      [
+          0.48525490196078436,
+          "desc",
+          "images\\0.png"
+      ],
+      [
+          0.6252156862745099,
+          "desc",
+          "images\\1.png"
+      ],
+      [
+          0.4996707818930042,
+          "desc",
+          "images\\2.png"
+      ],
+      [
+          0.6840084388185653,
+          "desc",
+          "images\\3.png"
+      ],
+      [
+          0.40434782608695646,
+          "desc",
+          "images\\4.png"
+      ],
+      [
+          0.4330196078431372,
+          "desc",
+          "images\\5.png"
+      ],
+      [
+          0.8119215686274509,
+          "desc",
+          "images\\6.png"
+      ],
+      [
+          0.48637096774193544,
+          "desc",
+          "images\\7.png"
+      ],
+      [
+          0.41052000000000005,
+          "desc",
+          "images\\8.png"
+      ],
+      [
+          0.7469803921568626,
+          "desc",
+          "images\\9.png"
+      ]
+  ],
+  "i_messy_rate": [
+      [
+          0.1211819052696228,
+          "desc",
+          "images\\0.png"
+      ],
+      [
+          0.1013462245464325,
+          "desc",
+          "images\\1.png"
+      ],
+      [
+          0.9259664416313171,
+          "desc",
+          "images\\2.png"
+      ],
+      [
+          0.1190466582775116,
+          "desc",
+          "images\\3.png"
+      ],
+      [
+          0.6015366315841675,
+          "desc",
+          "images\\4.png"
+      ],
+      [
+          0.7122364044189453,
+          "desc",
+          "images\\5.png"
+      ],
+      [
+          0.05697524547576904,
+          "desc",
+          "images\\6.png"
+      ],
+      [
+          0.9428436756134033,
+          "desc",
+          "images\\7.png"
+      ],
+      [
+          0.8530024886131287,
+          "desc",
+          "images\\8.png"
+      ],
+      [
+          0.1281992793083191,
+          "desc",
+          "images\\9.png"
+      ]
+  ],
+  "i_triq_model": -1,
+  "i_quality_rate": -1,
+  "grammar_model": {'issues': ['Possible spelling mistake found.', 'This sentence does not start with an uppercase letter.'], 'main_response': 'Please notice several grammar corrections', 'grade': 55, 'replacement_description': 'The apartment is big and beautiful, you should come see it'}
+}
+
 window.addEventListener('DOMContentLoaded', event => {
 
     // Navbar shrink function
@@ -91,10 +204,12 @@ window.onload = function() {
 
 var files;
 var loginWay;
+var descriptionFromUser;
 function sendOnClick() {
   if (loginWay != null && loginWay != "") {
     var formData = new FormData();
-    formData.append('descriptionText', document.getElementById('descriptionFromUser').value)
+    descriptionFromUser = document.getElementById('descriptionFromUser').value
+    formData.append('descriptionText', descriptionFromUser)
     if (typeof(files) != 'undefined') {
       if (files.size != 0) {
         for (var i = 0, f; (f = files[i]); i++) {
@@ -443,9 +558,39 @@ function loginForm() {
   }
 }
 
+function colorGradeDecider(grade) {
+  if (grade > 85) {
+    return "green";
+  }
+  if (grade > 60) {
+    return "orange";
+  }
+  return "red"
+}
+
+function grammarDescriptionIssuesList(response) {
+  if (resp.grammar_model.issues && resp.grammar_model.issues.length > 0) {
+    var ul = document.getElementById("grammarDescriptionIssuesList");
+    ul.textContent = "Possible issues are: "
+    ul.style.textAlign = "left"
+    for (let i = 0; i < resp.grammar_model.issues.length; i++) {
+      var li = document.createElement("li");
+      li.appendChild(document.createTextNode(resp.grammar_model.issues[i]));
+      li.style.textAlign = "left"
+      ul.appendChild(li);
+    }
+  }
+}
+
 function loadDescriptionBanner(response) {
-  grammarDescriptionGrade = "The Grammar grade for the uploaded description is: "+response.responseText
-  document.getElementById("descriptionGrammarGrade").textContent = grammarDescriptionGrade
+  document.getElementById("uploadedDescription").textContent = descriptionFromUser
+  document.getElementById("descriptionGrammarGrade").textContent = resp.grammar_model.grade + "%"
+  document.getElementById("descriptionGrammarGrade").style.color = colorGradeDecider(resp.grammar_model.grade);
+  document.getElementById("grammarDescriptionMainResponse").textContent = resp.grammar_model.main_response;
+  grammarDescriptionIssuesList(response)
+  document.getElementById("grammarDescriptionSuggestion").textContent = resp.grammar_model.replacement_description;
+  generatedNumber = "The Grammar grade for the uploaded description is: "+response.responseText
+  document.getElementById("generatedNumber").textContent = generatedNumber
   loadDescriptionChart();
 }
 
