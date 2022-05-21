@@ -115,8 +115,110 @@ resp = {
           "images\\9.png"
       ]
   ],
-  "i_triq_model": -1,
-  "i_quality_rate": -1,
+  "i_triq_model": [
+    [
+        0.48525490196078436,
+        "desc",
+        "images\\tiki.png"
+    ],
+    [
+        0.6252156862745099,
+        "desc",
+        "images\\tiki_new.png"
+    ],
+    [
+        0.4996707818930042,
+        "desc",
+        "images\\2.png"
+    ],
+    [
+        0.6840084388185653,
+        "desc",
+        "images\\3.png"
+    ],
+    [
+        0.40434782608695646,
+        "desc",
+        "images\\4.png"
+    ],
+    [
+        0.4330196078431372,
+        "desc",
+        "images\\5.png"
+    ],
+    [
+        0.8119215686274509,
+        "desc",
+        "images\\6.png"
+    ],
+    [
+        0.48637096774193544,
+        "desc",
+        "images\\7.png"
+    ],
+    [
+        0.41052000000000005,
+        "desc",
+        "images\\8.png"
+    ],
+    [
+        0.7469803921568626,
+        "desc",
+        "images\\9.png"
+    ]
+],
+  "i_quality_rate": [
+    [
+        0.48525490196078436,
+        "desc",
+        "images\\tiki.png"
+    ],
+    [
+        0.6252156862745099,
+        "desc",
+        "images\\tiki_new.png"
+    ],
+    [
+        0.4996707818930042,
+        "desc",
+        "images\\2.png"
+    ],
+    [
+        0.6840084388185653,
+        "desc",
+        "images\\3.png"
+    ],
+    [
+        0.40434782608695646,
+        "desc",
+        "images\\4.png"
+    ],
+    [
+        0.4330196078431372,
+        "desc",
+        "images\\5.png"
+    ],
+    [
+        0.8119215686274509,
+        "desc",
+        "images\\6.png"
+    ],
+    [
+        0.48637096774193544,
+        "desc",
+        "images\\7.png"
+    ],
+    [
+        0.41052000000000005,
+        "desc",
+        "images\\8.png"
+    ],
+    [
+        0.7469803921568626,
+        "desc",
+        "images\\9.png"
+    ]
+],
   "grammar_model": {'issues': ['Possible spelling mistake found.', 'This sentence does not start with an uppercase letter.'], 'main_response': 'Please notice several grammar corrections', 'grade': 55, 'replacement_description': 'The apartment is big and beautiful, you should come see it'}
 }
 
@@ -573,6 +675,16 @@ function colorGradeDecider(grade) {
   return "red"
 }
 
+function colorBrightnessGradeDecider(grade) {
+  if (grade > 90  || grade < 30) {
+    return "red";
+  }
+  if (grade > 80 || grade < 45) {
+    return "orange";
+  }
+  return "green"
+}
+
 function grammarDescriptionIssuesList(response) {
   if (resp.grammar_model.issues && resp.grammar_model.issues.length > 0) {
     var ul = document.getElementById("grammarDescriptionIssuesList");
@@ -624,22 +736,57 @@ function loadDescriptionGrades() {
   });
 }
 
-function loadImagesBanner(response) {
-  if (resp.num_of_images != -1) {
-    console.log("Suggest the user to add more images.");
-    document.getElementById("notEnoughImages").textContent = resp.num_of_images;
+function DivCreator(values, modelName) {
+  var gradeNumber = Math.round(values[0] * 100);
+  var commentValue = values[1];
+  var div = document.createElement("div");
+  var title = document.createElement("strong");
+  title.textContent = modelName + ":";
+  div.style.textAlign = "left";
+  title.style.textDecoration = "underline";
+  title.style.fontSize = "larger";
+  var span = document.createElement("span");
+  span.className = "circle";
+  span.textContent = gradeNumber + "%"
+  if (modelName == "Brightness") {
+    span.style.color = colorBrightnessGradeDecider(gradeNumber);
   }
+  else {
+    span.style.color = colorGradeDecider(gradeNumber);
+  }
+  var comment = document.createElement("p");
+  comment.textContent = commentValue;
+  div.appendChild(title);
+  div.appendChild(span);
+  div.appendChild(comment);
+  return div;
+}
+
+function imgCreator(i) {
+  var img = document.createElement("img");
+  img.src = URL.createObjectURL(files[i]);
+  img.className = "imges-card-img-top card-img-top imagesResponse";
+  img.alt = "Card image cap";
+  return img;
+}
+
+function cardImagesCreator() {
   if (files != "undefined") {
     if (files.length > 0) {
       var mainCard = document.getElementById("imagesCardsResponse");
       mainCard.innerHTML = '';
       for (let i = 0; i < files.length; i++) {
+        var quality = qualityCalculator(files[i].name)
+        var qualityDiv = DivCreator(quality, "Quality");
+        var brightness = brightnessCalculator(files[i].name)
+        var brightnessDiv = DivCreator(brightness, "Brightness");
+        var messyRoom = messCalculator(files[i].name)
+        var messyRoomDiv = DivCreator(messyRoom, "Mess");
+        var triq = triqCalculator(files[i].name)
+        var triqDiv = DivCreator(triq, "Triq");
         var card = document.createElement("div");
         card.className = "cardImages card"
-        var img = document.createElement("img");
-        img.src = URL.createObjectURL(files[i]);
-        img.className = "imges-card-img-top card-img-top imagesResponse";
-        img.alt = "Card image cap";
+        var img = imgCreator(i);
         card.appendChild(img);
         console.log(files[i].name);
         var cardBody = document.createElement("div");
@@ -647,9 +794,57 @@ function loadImagesBanner(response) {
         var cardTitle = document.createElement("p");
         cardTitle.textContent = files[i].name;
         cardBody.appendChild(cardTitle);
+        cardBody.appendChild(qualityDiv);
+        cardBody.appendChild(brightnessDiv);
+        cardBody.appendChild(messyRoomDiv);
+        cardBody.appendChild(triqDiv);
         card.appendChild(cardBody);
         mainCard.appendChild(card);
       }
     }
   }
+}
+
+function qualityCalculator(fileName) {
+  for(let i = 0; i < resp.i_quality_rate.length; i++) {
+    console.log("images\\" + fileName)
+    if (resp.i_quality_rate[i][2] == ("images\\" + fileName)) {
+      return resp.i_quality_rate[i]
+    }
+  }
+}
+
+function brightnessCalculator(fileName) {
+  for(let i = 0; i < resp.i_bright_rate.length; i++) {
+    console.log("images\\" + fileName)
+    if (resp.i_bright_rate[i][2] == ("images\\" + fileName)) {
+      return resp.i_bright_rate[i]
+    }
+  }
+}
+
+function messCalculator(fileName) {
+  for(let i = 0; i < resp.i_messy_rate.length; i++) {
+    console.log("images\\" + fileName)
+    if (resp.i_messy_rate[i][2] == ("images\\" + fileName)) {
+      return resp.i_messy_rate[i]
+    }
+  }
+}
+
+function triqCalculator(fileName) {
+  for(let i = 0; i < resp.i_triq_model.length; i++) {
+    console.log("images\\" + fileName)
+    if (resp.i_triq_model[i][2] == ("images\\" + fileName)) {
+      return resp.i_triq_model[i]
+    }
+  }
+}
+
+function loadImagesBanner(response) {
+  if (resp.num_of_images != -1) {
+    console.log("Suggest the user to add more images.");
+    document.getElementById("notEnoughImages").textContent = resp.num_of_images;
+  }
+  cardImagesCreator();
 }
