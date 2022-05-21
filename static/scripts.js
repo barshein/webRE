@@ -685,6 +685,16 @@ function colorBrightnessGradeDecider(grade) {
   return "green"
 }
 
+function colorMessGradeDecider(grade) {
+  if (grade > 85) {
+    return "red";
+  }
+  if (grade > 60) {
+    return "orange";
+  }
+  return "green"
+}
+
 function grammarDescriptionIssuesList(response) {
   if (resp.grammar_model.issues && resp.grammar_model.issues.length > 0) {
     var ul = document.getElementById("grammarDescriptionIssuesList");
@@ -750,9 +760,14 @@ function DivCreator(values, modelName) {
   span.textContent = gradeNumber + "%"
   if (modelName == "Brightness") {
     span.style.color = colorBrightnessGradeDecider(gradeNumber);
-  }
+  } 
   else {
-    span.style.color = colorGradeDecider(gradeNumber);
+    if (modelName == "Mess") {
+      span.style.color = colorMessGradeDecider(gradeNumber);
+    }
+    else {
+      span.style.color = colorGradeDecider(gradeNumber);
+    }  
   }
   var comment = document.createElement("p");
   comment.textContent = commentValue;
