@@ -11920,3 +11920,25 @@ ul.thumb-Images li {
   align-items: center;
   justify-content: center;
 }
+
+.imagesResponse {
+  height: 150px;
+  width: 150px;
+}
+
+.images-card-deck{
+  margin-top: 10px;
+  margin-left: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-gap: .5rem;
+}
+
+.imges-card-img-top {
+  align-self: center;
+}
+
+.cardImages {
+  width: 100%;
+  border: 1px solid #e5e5e5 !important;
+}

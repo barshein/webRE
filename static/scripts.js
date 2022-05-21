@@ -15,12 +15,12 @@ resp = {
       [
           0.48525490196078436,
           "desc",
-          "images\\0.png"
+          "images\\tiki.png"
       ],
       [
           0.6252156862745099,
           "desc",
-          "images\\1.png"
+          "images\\tiki_new.png"
       ],
       [
           0.4996707818930042,
@@ -67,12 +67,12 @@ resp = {
       [
           0.1211819052696228,
           "desc",
-          "images\\0.png"
+          "images\\tiki.png"
       ],
       [
           0.1013462245464325,
           "desc",
-          "images\\1.png"
+          "images\\tiki_new.png"
       ],
       [
           0.9259664416313171,
@@ -233,6 +233,8 @@ function sendOnClick() {
           document.getElementById("descriptionAccordion").className = 'accordion-item';
           loadDescriptionBanner(Http);
         }
+        document.getElementById("imagesAccordion").className = 'accordion-item';
+        loadImagesBanner(Http);
       }
     }
   }
@@ -620,4 +622,34 @@ function loadDescriptionGrades() {
       }
     }
   });
+}
+
+function loadImagesBanner(response) {
+  if (resp.num_of_images != -1) {
+    console.log("Suggest the user to add more images.");
+    document.getElementById("notEnoughImages").textContent = resp.num_of_images;
+  }
+  if (files != "undefined") {
+    if (files.length > 0) {
+      var mainCard = document.getElementById("imagesCardsResponse");
+      mainCard.innerHTML = '';
+      for (let i = 0; i < files.length; i++) {
+        var card = document.createElement("div");
+        card.className = "cardImages card"
+        var img = document.createElement("img");
+        img.src = URL.createObjectURL(files[i]);
+        img.className = "imges-card-img-top card-img-top imagesResponse";
+        img.alt = "Card image cap";
+        card.appendChild(img);
+        console.log(files[i].name);
+        var cardBody = document.createElement("div");
+        cardBody.className = "card-body";
+        var cardTitle = document.createElement("p");
+        cardTitle.textContent = files[i].name;
+        cardBody.appendChild(cardTitle);
+        card.appendChild(cardBody);
+        mainCard.appendChild(card);
+      }
+    }
+  }
 }
