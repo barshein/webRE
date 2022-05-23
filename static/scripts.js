@@ -585,6 +585,7 @@ function signOut() {
   console.log('User signed out.');
   });
   loginWay = ""
+  document.getElementById("loggedIn").className = 'hidden';
 }
 
 function generalLogin(loggedName, email) {
