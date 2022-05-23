@@ -306,12 +306,14 @@ window.onload = function() {
 
 var files;
 var loginWay;
+var emailLogin;
 var descriptionFromUser;
 function sendOnClick() {
   if (loginWay != null && loginWay != "") {
     var formData = new FormData();
     descriptionFromUser = document.getElementById('descriptionFromUser').value
     formData.append('descriptionText', descriptionFromUser)
+    formData.append('email', emailLogin)
     if (typeof(files) != 'undefined') {
       if (files.size != 0) {
         for (var i = 0, f; (f = files[i]); i++) {
@@ -585,7 +587,8 @@ function signOut() {
   loginWay = ""
 }
 
-function generalLogin(loggedName) {
+function generalLogin(loggedName, email) {
+  emailLogin = email;
   const listItem = document.getElementById("loginButton");
   const loginItem = document.createElement('li');
   loginItem.innerHTML = '<a type="button" class="navbar-brand" data-toggle="modal" data-target="#loginModal">Login</a>';
@@ -628,7 +631,7 @@ function attachSignin(element) {
         console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
         loginWay = 'Google';
         var loggedName = profile.getName();
-        generalLogin(loggedName)
+        generalLogin(loggedName, profile.getEmail())
       }, function(error) {
         alert(JSON.stringify(error, undefined, 2));
       });
@@ -675,7 +678,7 @@ function loginForm() {
   if (verifyLogin(email, password)) {
     // TODO: change logged name to be the name that appears in the DB (instead of username)
     var loggedName = email;
-    generalLogin(loggedName)  
+    generalLogin(loggedName, email)  
     loginWay = 'Local'
   }
   else {
