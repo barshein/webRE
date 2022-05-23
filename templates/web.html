@@ -95,14 +95,14 @@
                 <div class="d-flex flex-column text-center">
                   <form>
                     <div class="form-group">
-                      <input type="username" class="form-control" id="username1" placeholder="Your username...">
-                    </div>
+                      <input type="email" class="form-control" id="email1" placeholder="Your email address...">
+                    </div>    
                     <div class="form-group">
                       <input type="password" class="form-control" id="password1" placeholder="Your password...">
                     </div>
                     <button type="button" class="btn btn-primary btn-block" onclick="loginForm()">Login</button>
                   </form>
-                  <div class="hidden" id="usernameOrPasswordIncorrect" style="color:red">The username or password is incorrect! Try again</div>
+                  <div class="hidden" id="emailOrPasswordIncorrect" style="color:red">The username or password is incorrect! Try again</div>
             
                   <div class="text-center text-muted delimiter">or use a social network</div>
                   <div class="d-flex justify-content-center social-buttons">
@@ -144,23 +144,25 @@
                   <div class="d-flex flex-column text-center">
                     <form id="signupForm">
                       <div class="form-group">
-                        <input type="username" class="form-control" id="username2" placeholder="Your username...">
+                        <input type="email" class="form-control" id="email2" placeholder="Your email address...">
                       </div>    
                       <div class="form-group">
-                        <input type="password" class="form-control" id="password2" placeholder="Your password...">
-                      </div>
+                        <input type="username" class="form-control" id="username2" placeholder="Your username...">
+                      </div>    
                       <div class="form-group">
                         <input type="name" class="form-control" id="name2" placeholder="Your name...">
                       </div>
                       <div class="form-group">
-                        <input type="email" class="form-control" id="email2" placeholder="Your email address...">
+                        <input type="password" class="form-control" id="password2" placeholder="Your password...">
                       </div>
                       <button type="button" class="btn btn-primary btn-block" onclick="signupForm()">Sign Up</button>
                     </form>
+                    <div class="hidden" id="emailIsTaken" style="color:red">Email is already taken!</div>
+                    <div class="hidden" id="validSignup" style="color:green">You can sign in now!</div>
                   </div>
                 </div>
                   <div class="modal-footer d-flex justify-content-center">
-                  <div>You can Sign in now!</div>
+                  <div>Sign up to enjoy our service!</div>
                 </div>
               </div>
             </div>

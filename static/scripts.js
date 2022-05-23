@@ -343,7 +343,6 @@ function sendOnClick() {
   else {
     var myModal = new bootstrap.Modal(document.getElementById('loginModal'))
     myModal.show()
-    // document.getElementById("loginButton").click();
     console.log("The user is not logged in")
   }
 }
@@ -641,8 +640,27 @@ function signupForm() {
   name = document.getElementById("name2").value;
   email = document.getElementById("email2").value;
   console.log("signup info: {username:", userName,", password:", password,", name:", name,", email:", email,"}")
-  // TODO: check if username or email already exists (from DB)
-  // TODO: save the data to the DB (also generate ID)
+  var formData = new FormData();
+  formData.append('userName', userName);
+  formData.append('password', password);
+  formData.append('name', name);
+  formData.append('email', email);
+  const Http = new XMLHttpRequest();
+  const url = '/signUp';
+  Http.open("POST", url);
+  Http.send(formData);
+  Http.onreadystatechange = (e) => {
+    if(Http.readyState === XMLHttpRequest.DONE) {
+      if (Http.responseText == 1) {
+        document.getElementById("validSignup").className = '';
+        console.log("Sign up succeeded");
+      }
+      else {
+        document.getElementById("emailIsTaken").className = '';
+        console.log("Email is already taken");
+      }
+    }
+  }
 }
 
 function verifyLogin() {
@@ -650,18 +668,19 @@ function verifyLogin() {
 }
 
 function loginForm() {
-  userName = document.getElementById("username1").value;
+  email = document.getElementById("email1").value;
   password = document.getElementById("password1").value;
-  console.log("sign in info: {username:", userName,", password:", password,"}")
+  console.log("sign in info: {email:", email,", password:", password,"}")
   // TODO: verify login
-  if (verifyLogin(userName, password)) {
+  if (verifyLogin(email, password)) {
     // TODO: change logged name to be the name that appears in the DB (instead of username)
     var loggedName = userName;
     generalLogin(loggedName)  
     loginWay = 'Local'
   }
   else {
-    document.getElementById("usernameOrPasswordIncorrect").className = '';
+    document.getElementById("emailOrPasswordIncorrect").className = '';
+    console.log("Email or password is incorrect");
   }
 }
 
