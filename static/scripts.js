@@ -666,7 +666,32 @@ function signupForm() {
   }
 }
 
-function verifyLogin() {
+function verifyLogin(email, password) {
+  var formData = new FormData();
+  formData.append('email', email);
+  formData.append('password', password);
+
+  const Http = new XMLHttpRequest();
+  const url = '/verifyLogin';
+  Http.open("POST", url);
+  Http.send(formData);
+
+  Http.onreadystatechange = (e) => {
+    if(Http.readyState === XMLHttpRequest.DONE) {
+      console.log("response for sign in from server is:", Http.responseText)
+      if (Http.responseText != 0) {
+        var loggedName = Http.responseText;
+        generalLogin(loggedName, email)  
+        loginWay = 'Local'
+        return true;
+      }
+      // TODO: can remove when the server is ready
+      else {
+        return false;
+      }
+    }
+  }
+  // TODO: temporary returns true (should return false) - until the server is ready
   return true;
 }
 
@@ -674,12 +699,8 @@ function loginForm() {
   email = document.getElementById("email1").value;
   password = document.getElementById("password1").value;
   console.log("sign in info: {email:", email,", password:", password,"}")
-  // TODO: verify login
   if (verifyLogin(email, password)) {
-    // TODO: change logged name to be the name that appears in the DB (instead of username)
-    var loggedName = email;
-    generalLogin(loggedName, email)  
-    loginWay = 'Local'
+    document.getElementById("loggedIn").className = '';
   }
   else {
     document.getElementById("emailOrPasswordIncorrect").className = '';
