@@ -4841,6 +4841,7 @@ textarea.form-control-lg {
 }
 
 .accordion-item {
+  border-top: 1px solid #e5e5e5 !important;
   background-color: #fff;
   border: 1px solid rgba(0, 0, 0, 0.125);
 }
