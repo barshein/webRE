@@ -674,7 +674,7 @@ function loginForm() {
   // TODO: verify login
   if (verifyLogin(email, password)) {
     // TODO: change logged name to be the name that appears in the DB (instead of username)
-    var loggedName = userName;
+    var loggedName = email;
     generalLogin(loggedName)  
     loginWay = 'Local'
   }
