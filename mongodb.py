@@ -22,7 +22,6 @@ def isDBcontaionEmail(email):
   else:
     return False
 
-
 def addData(json):
   res = data.insert_one(json)
   print(res)
@@ -42,9 +41,9 @@ def getDataBySessionId(sessionId):
   dbPhotos = info["photos"]
   photosList = []
   for photo in dbPhotos:
-    photosList.append()
+    photosList.append(photo)
 
-  return description
+  return description, photosList
 
 def updateCustumerSessionsByEmail(email, newSessionId, SessionResult):
   sessionIds = getCustomerSessionsByEmail(email)
@@ -53,3 +52,10 @@ def updateCustumerSessionsByEmail(email, newSessionId, SessionResult):
   newvalues = {"$set": {"sessionIds": sessionIds}}
   customer.update_one(query, newvalues)
 
+
+def couldLogin(email, password):
+  query = {"email": email, "password": password}
+  info = data.find(query, {"sessionId": 0})
+  if info:
+    return 0, ""
+  return 1, info["name"]

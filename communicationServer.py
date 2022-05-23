@@ -3,7 +3,7 @@ import base64
 import requests
 from flask import Flask, render_template, send_from_directory
 from flask import request
-from mongodb import addCustomer, isDBcontaionEmail, updateCustumerSessionsByEmail
+from mongodb import addCustomer, isDBcontaionEmail, updateCustumerSessionsByEmail, couldLogin
 
 
 comm = Flask(__name__)
@@ -25,11 +25,27 @@ def signUp():
         json["email"] = request.form.get("email")
         if not isDBcontaionEmail(json["email"]):
             json["name"] = request.form.get("name")
+            json["userName"] = request.form.get("userName")
             json["password"] = request.form.get("password")
             json["sessionIds"] = {}
             print("save customer")
             addCustomer(json)
-    return my_form()
+            return 1
+    return 0
+
+@comm.route('/verfiyLogin', methods =["POST"])
+def verfiyLogin():
+    print("verfiyLogin")
+    json = {}
+    if request.method == "POST":
+        json["email"] = request.form.get("email")
+        json["password"] = request.form.get("password")
+        # return name to JS if could verify
+        canLogin, name = couldLogin(json["email"],json["password"])
+        if canLogin:
+            return name
+    return 0
+
 
 @comm.route('/', methods =["POST"])
 def sendServiceInfo():
