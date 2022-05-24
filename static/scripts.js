@@ -932,4 +932,56 @@ function loadImagesBanner(response) {
     document.getElementById("notEnoughImages").textContent = resp.num_of_images;
   }
   cardImagesCreator();
+  imagesChart(response);
+}
+
+function imagesChart(response) {
+  var brightnessLabels = getBrightnessLables(response);
+  console.log(brightnessLabels);
+  var brightnessGrades = getBrightnessGrades(response);
+  imagesBrightnessChart(response, brightnessLabels, brightnessGrades);
+}
+
+function getBrightnessLables(response) {
+  var brightnessLabels = [];
+  for(let i = 0; i < resp.i_bright_rate.length; i++) {
+    file_name = resp.i_bright_rate[i][2];
+    file_name = file_name.split('\\')[1];
+    brightnessLabels.push(file_name);
+  }
+  return brightnessLabels;
+}
+
+function getBrightnessGrades(response) {
+  var brightnessGrades = [];
+  for(let i = 0; i < resp.i_bright_rate.length; i++) {
+    grade = Math.round(resp.i_bright_rate[i][0] * 100);
+    brightnessGrades.push(grade);
+  }
+  return brightnessGrades;
+}
+
+function imagesBrightnessChart(response, brightnessLabels, brightnessGrades) {
+  var xValues = ["Brightness", "France", "Spain", "USA", "Argentina"];
+  var yValues = [55, 49, 44, 24, 15];
+
+  new Chart("chart_ImagesGradesByBrightness", {
+    type: "line",
+    data: {
+      labels: brightnessLabels,
+      datasets: [{ 
+          data: brightnessGrades,
+          label: "Brightness Grades",
+          borderColor: "#8e5ea2",
+          fill: false
+        }
+      ]
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Brightness grades of all images'
+      }
+    }
+  });
 }
