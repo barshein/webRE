@@ -219,7 +219,9 @@ resp = {
         "images\\9.png"
     ]
 ],
-  "grammar_model": {'issues': ['Possible spelling mistake found.', 'This sentence does not start with an uppercase letter.'], 'main_response': 'Please notice several grammar corrections', 'grade': 55, 'replacement_description': 'The apartment is big and beautiful, you should come see it'}
+  "grammar_model": {'issues': ['Possible spelling mistake found.', 'This sentence does not start with an uppercase letter.'], 'main_response': 'Please notice several grammar corrections', 'grade': 55, 'replacement_description': 'The apartment is big and beautiful, you should come see it'},
+  "semantic_model": [0.8119215686274509,
+    "semantic main response"]
 }
 
 window.addEventListener('DOMContentLoaded', event => {
@@ -760,14 +762,23 @@ function grammarDescriptionIssuesList(response) {
 }
 
 function loadDescriptionBanner(response) {
-  document.getElementById("uploadedDescription").textContent = descriptionFromUser
-  document.getElementById("descriptionGrammarGrade").textContent = resp.grammar_model.grade + "%"
+  document.getElementById("uploadedDescription").textContent = descriptionFromUser;
+
+  // grammar description response
+  document.getElementById("descriptionGrammarGrade").textContent = resp.grammar_model.grade + "%";
   document.getElementById("descriptionGrammarGrade").style.color = colorGradeDecider(resp.grammar_model.grade);
   document.getElementById("grammarDescriptionMainResponse").textContent = resp.grammar_model.main_response;
-  grammarDescriptionIssuesList(response)
+  grammarDescriptionIssuesList(response);
   document.getElementById("grammarDescriptionSuggestion").textContent = resp.grammar_model.replacement_description;
-  generatedNumber = "The Grammar grade for the uploaded description is: "+response.responseText
-  document.getElementById("generatedNumber").textContent = generatedNumber
+  generatedNumber = "The Grammar grade for the uploaded description is: "+response.responseText;
+  document.getElementById("generatedNumber").textContent = generatedNumber;
+
+  // semantic description response
+  var semanticGrade = Math.round(resp.semantic_model[0] * 100);
+  document.getElementById("descriptionSemanticGrade").textContent = semanticGrade + "%";
+  document.getElementById("descriptionSemanticGrade").style.color = colorGradeDecider(semanticGrade);
+  document.getElementById("semanticDescriptionMainResponse").textContent = resp.semantic_model[1];
+
   loadDescriptionGrades();
 }
 
