@@ -9,7 +9,7 @@
 
 
 // TODO: delete
-resp = {
+response = {
   "num_of_images": -1,
   "i_bright_rate": [
       [
@@ -122,7 +122,7 @@ resp = {
         "images\\tiki.png"
     ],
     [
-        0.6252156862745099,
+        0.7252156862745099,
         "desc",
         "images\\tiki_new.png"
     ],
@@ -147,7 +147,7 @@ resp = {
         "images\\5.png"
     ],
     [
-        0.8119215686274509,
+        0.6019215686274509,
         "desc",
         "images\\6.png"
     ],
@@ -157,7 +157,7 @@ resp = {
         "images\\7.png"
     ],
     [
-        0.41052000000000005,
+        0.30052000000000005,
         "desc",
         "images\\8.png"
     ],
@@ -748,44 +748,44 @@ function colorMessGradeDecider(grade) {
 }
 
 function grammarDescriptionIssuesList(response) {
-  if (resp.grammar_model.issues && resp.grammar_model.issues.length > 0) {
+  if (response.grammar_model.issues && response.grammar_model.issues.length > 0) {
     var ul = document.getElementById("grammarDescriptionIssuesList");
     ul.textContent = "Possible issues are: "
     ul.style.textAlign = "left"
-    for (let i = 0; i < resp.grammar_model.issues.length; i++) {
+    for (let i = 0; i < response.grammar_model.issues.length; i++) {
       var li = document.createElement("li");
-      li.appendChild(document.createTextNode(resp.grammar_model.issues[i]));
+      li.appendChild(document.createTextNode(response.grammar_model.issues[i]));
       li.style.textAlign = "left"
       ul.appendChild(li);
     }
   }
 }
 
-function loadDescriptionBanner(response) {
+function loadDescriptionBanner(Http) {
   document.getElementById("uploadedDescription").textContent = descriptionFromUser;
 
   // grammar description response
-  document.getElementById("descriptionGrammarGrade").textContent = resp.grammar_model.grade + "%";
-  document.getElementById("descriptionGrammarGrade").style.color = colorGradeDecider(resp.grammar_model.grade);
-  document.getElementById("grammarDescriptionMainResponse").textContent = resp.grammar_model.main_response;
+  document.getElementById("descriptionGrammarGrade").textContent = response.grammar_model.grade + "%";
+  document.getElementById("descriptionGrammarGrade").style.color = colorGradeDecider(response.grammar_model.grade);
+  document.getElementById("grammarDescriptionMainResponse").textContent = response.grammar_model.main_response;
   grammarDescriptionIssuesList(response);
-  document.getElementById("grammarDescriptionSuggestion").textContent = resp.grammar_model.replacement_description;
-  generatedNumber = "The Grammar grade for the uploaded description is: "+response.responseText;
+  document.getElementById("grammarDescriptionSuggestion").textContent = response.grammar_model.replacement_description;
+  generatedNumber = "The Grammar grade for the uploaded description is: "+Http.responseText;
   document.getElementById("generatedNumber").textContent = generatedNumber;
 
   // semantic description response
-  var semanticGrade = Math.round(resp.semantic_model[0] * 100);
+  var semanticGrade = Math.round(response.semantic_model[0] * 100);
   document.getElementById("descriptionSemanticGrade").textContent = semanticGrade + "%";
   document.getElementById("descriptionSemanticGrade").style.color = colorGradeDecider(semanticGrade);
-  document.getElementById("semanticDescriptionMainResponse").textContent = resp.semantic_model[1];
+  document.getElementById("semanticDescriptionMainResponse").textContent = response.semantic_model[1];
 
   loadDescriptionGrades();
 }
 
 function loadDescriptionGrades() {
   var xValues = ["Grammar", "Positive semantic"];
-  var yValues = [resp.grammar_model.grade, 70];
-  grammarGradeColor = colorGradeDecider(resp.grammar_model.grade)
+  var yValues = [response.grammar_model.grade, 70];
+  grammarGradeColor = colorGradeDecider(response.grammar_model.grade)
   var barColors = [grammarGradeColor, "green"];
 
   new Chart("chart_DescriptionGradesByModel", {
@@ -891,45 +891,45 @@ function cardImagesCreator() {
 }
 
 function qualityCalculator(fileName) {
-  for(let i = 0; i < resp.i_quality_rate.length; i++) {
+  for(let i = 0; i < response.i_quality_rate.length; i++) {
     console.log("images\\" + fileName)
-    if (resp.i_quality_rate[i][2] == ("images\\" + fileName)) {
-      return resp.i_quality_rate[i]
+    if (response.i_quality_rate[i][2] == ("images\\" + fileName)) {
+      return response.i_quality_rate[i]
     }
   }
 }
 
 function brightnessCalculator(fileName) {
-  for(let i = 0; i < resp.i_bright_rate.length; i++) {
+  for(let i = 0; i < response.i_bright_rate.length; i++) {
     console.log("images\\" + fileName)
-    if (resp.i_bright_rate[i][2] == ("images\\" + fileName)) {
-      return resp.i_bright_rate[i]
+    if (response.i_bright_rate[i][2] == ("images\\" + fileName)) {
+      return response.i_bright_rate[i]
     }
   }
 }
 
 function messCalculator(fileName) {
-  for(let i = 0; i < resp.i_messy_rate.length; i++) {
+  for(let i = 0; i < response.i_messy_rate.length; i++) {
     console.log("images\\" + fileName)
-    if (resp.i_messy_rate[i][2] == ("images\\" + fileName)) {
-      return resp.i_messy_rate[i]
+    if (response.i_messy_rate[i][2] == ("images\\" + fileName)) {
+      return response.i_messy_rate[i]
     }
   }
 }
 
 function triqCalculator(fileName) {
-  for(let i = 0; i < resp.i_triq_model.length; i++) {
+  for(let i = 0; i < response.i_triq_model.length; i++) {
     console.log("images\\" + fileName)
-    if (resp.i_triq_model[i][2] == ("images\\" + fileName)) {
-      return resp.i_triq_model[i]
+    if (response.i_triq_model[i][2] == ("images\\" + fileName)) {
+      return response.i_triq_model[i]
     }
   }
 }
 
-function loadImagesBanner(response) {
-  if (resp.num_of_images != -1) {
+function loadImagesBanner(Http) {
+  if (response.num_of_images != -1) {
     console.log("Suggest the user to add more images.");
-    document.getElementById("notEnoughImages").textContent = resp.num_of_images;
+    document.getElementById("notEnoughImages").textContent = response.num_of_images;
   }
   cardImagesCreator();
   imagesChart(response);
@@ -939,20 +939,21 @@ function imagesChart(response) {
   var imagesLabels = getImagesLabels(response);
   console.log(imagesLabels);
   var brightnessGrades = getBrightnessGrades(response);
-  var qualityGrades = getQualityGrades(response);
   var messGrades = getMessGrades(response);
+  var triqGrades = getTriqGrades(response);
+  var qualityGrades = getQualityGrades(response);
   console.log(qualityGrades);
-  createImagesChart(response, imagesLabels, brightnessGrades, messGrades, qualityGrades);
+  createImagesChart(response, imagesLabels, brightnessGrades, messGrades, triqGrades, qualityGrades);
 }
 
 function getImagesLabels(response) {
   var imagesLabels = [];
-  if (resp.i_bright_rate.length != resp.i_messy_rate.length || resp.i_bright_rate.length != resp.i_triq_model.length
-    || resp.i_bright_rate.length != resp.i_quality_rate.length) {
+  if (response.i_bright_rate.length != response.i_messy_rate.length || response.i_bright_rate.length != response.i_triq_model.length
+    || response.i_bright_rate.length != response.i_quality_rate.length) {
       console.log("Not all the models returns answer to all of the images. The chart might be wrong")
     }
-  for(let i = 0; i < resp.i_bright_rate.length; i++) {
-    file_name = resp.i_bright_rate[i][2];
+  for(let i = 0; i < response.i_bright_rate.length; i++) {
+    file_name = response.i_bright_rate[i][2];
     file_name = file_name.split('\\')[1];
     imagesLabels.push(file_name);
   }
@@ -961,8 +962,8 @@ function getImagesLabels(response) {
 
 function getBrightnessGrades(response) {
   var brightnessGrades = [];
-  for(let i = 0; i < resp.i_bright_rate.length; i++) {
-    grade = Math.round(resp.i_bright_rate[i][0] * 100);
+  for(let i = 0; i < response.i_bright_rate.length; i++) {
+    grade = Math.round(response.i_bright_rate[i][0] * 100);
     brightnessGrades.push(grade);
   }
   return brightnessGrades;
@@ -970,23 +971,32 @@ function getBrightnessGrades(response) {
 
 function getMessGrades(response) {
   var messGrades = [];
-  for(let i = 0; i < resp.i_messy_rate.length; i++) {
-    grade = Math.round(resp.i_messy_rate[i][0] * 100);
+  for(let i = 0; i < response.i_messy_rate.length; i++) {
+    grade = Math.round(response.i_messy_rate[i][0] * 100);
     messGrades.push(grade);
   }
   return messGrades;
 }
 
+function getTriqGrades(response) {
+  var triqGrades = [];
+  for(let i = 0; i < response.i_triq_model.length; i++) {
+    grade = Math.round(response.i_triq_model[i][0] * 100);
+    triqGrades.push(grade);
+  }
+  return triqGrades;
+}
+
 function getQualityGrades(response) {
   var qualityGrades = [];
-  for(let i = 0; i < resp.i_quality_rate.length; i++) {
-    grade = Math.round(resp.i_quality_rate[i][0] * 100);
+  for(let i = 0; i < response.i_quality_rate.length; i++) {
+    grade = Math.round(response.i_quality_rate[i][0] * 100);
     qualityGrades.push(grade);
   }
   return qualityGrades;
 }
 
-function createImagesChart(response, imagesLabels, brightnessGrades, messGrades, qualityGrades) {
+function createImagesChart(response, imagesLabels, brightnessGrades, messGrades, triqGrades, qualityGrades) {
   new Chart("chart_ImagesGrades", {
     type: "line",
     data: {
@@ -997,14 +1007,19 @@ function createImagesChart(response, imagesLabels, brightnessGrades, messGrades,
           borderColor: "#8e5ea2",
           fill: false
         }, { 
-          data: qualityGrades,
-          label: "Quality Grades",
-          borderColor: "#3e95cd",
-          fill: false
-        }, { 
           data: messGrades,
           label: "Mess Grades",
           borderColor: "#3cba9f",
+          fill: false
+        }, { 
+          data: triqGrades,
+          label: "Triq Grades",
+          borderColor: "#c45850",
+          fill: false
+        }, { 
+          data: qualityGrades,
+          label: "Quality Grades",
+          borderColor: "#3e95cd",
           fill: false
         }
       ]
