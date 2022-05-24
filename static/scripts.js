@@ -179,12 +179,12 @@ resp = {
         "images\\tiki_new.png"
     ],
     [
-        0.4996707818930042,
+        0.5996707818930042,
         "desc",
         "images\\2.png"
     ],
     [
-        0.6840084388185653,
+        0.7140084388185653,
         "desc",
         "images\\3.png"
     ],
@@ -936,20 +936,26 @@ function loadImagesBanner(response) {
 }
 
 function imagesChart(response) {
-  var brightnessLabels = getBrightnessLables(response);
-  console.log(brightnessLabels);
+  var imagesLabels = getImagesLabels(response);
+  console.log(imagesLabels);
   var brightnessGrades = getBrightnessGrades(response);
-  imagesBrightnessChart(response, brightnessLabels, brightnessGrades);
+  var qualityGrades = getQualityGrades(response);
+  console.log(qualityGrades);
+  createImagesChart(response, imagesLabels, brightnessGrades, qualityGrades);
 }
 
-function getBrightnessLables(response) {
-  var brightnessLabels = [];
+function getImagesLabels(response) {
+  var imagesLabels = [];
+  if (resp.i_bright_rate.length != resp.i_messy_rate.length || resp.i_bright_rate.length != resp.i_triq_model.length
+    || resp.i_bright_rate.length != resp.i_quality_rate.length) {
+      console.log("Not all the models returns answer to all of the images. The chart might be wrong")
+    }
   for(let i = 0; i < resp.i_bright_rate.length; i++) {
     file_name = resp.i_bright_rate[i][2];
     file_name = file_name.split('\\')[1];
-    brightnessLabels.push(file_name);
+    imagesLabels.push(file_name);
   }
-  return brightnessLabels;
+  return imagesLabels;
 }
 
 function getBrightnessGrades(response) {
@@ -961,15 +967,29 @@ function getBrightnessGrades(response) {
   return brightnessGrades;
 }
 
-function imagesBrightnessChart(response, brightnessLabels, brightnessGrades) {
-  new Chart("chart_ImagesGradesByBrightness", {
+function getQualityGrades(response) {
+  var qualityGrades = [];
+  for(let i = 0; i < resp.i_quality_rate.length; i++) {
+    grade = Math.round(resp.i_quality_rate[i][0] * 100);
+    qualityGrades.push(grade);
+  }
+  return qualityGrades;
+}
+
+function createImagesChart(response, imagesLabels, brightnessGrades, qualityGrades) {
+  new Chart("chart_ImagesGrades", {
     type: "line",
     data: {
-      labels: brightnessLabels,
+      labels: imagesLabels,
       datasets: [{ 
           data: brightnessGrades,
           label: "Brightness Grades",
           borderColor: "#8e5ea2",
+          fill: false
+        }, { 
+          data: qualityGrades,
+          label: "Quality Grades",
+          borderColor: "#3e95cd",
           fill: false
         }
       ]
@@ -977,7 +997,7 @@ function imagesBrightnessChart(response, brightnessLabels, brightnessGrades) {
     options: {
       title: {
         display: true,
-        text: 'Brightness grades of all images'
+        text: 'Summary grades of all images'
       }
     }
   });
