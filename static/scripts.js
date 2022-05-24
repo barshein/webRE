@@ -791,6 +791,15 @@ function loadDescriptionGrades() {
       title: {
         display: true,
         text: "Description grades by model"
+      },
+      scales: {
+        yAxes: [{
+            display: true,
+            ticks: {
+                suggestedMin: 0,
+                max: 100
+            }
+        }]
       }
     }
   });
