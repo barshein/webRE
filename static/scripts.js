@@ -962,9 +962,6 @@ function getBrightnessGrades(response) {
 }
 
 function imagesBrightnessChart(response, brightnessLabels, brightnessGrades) {
-  var xValues = ["Brightness", "France", "Spain", "USA", "Argentina"];
-  var yValues = [55, 49, 44, 24, 15];
-
   new Chart("chart_ImagesGradesByBrightness", {
     type: "line",
     data: {
