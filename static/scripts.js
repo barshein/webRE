@@ -942,7 +942,6 @@ function imagesChart(response) {
   var messGrades = getMessGrades(response);
   var triqGrades = getTriqGrades(response);
   var qualityGrades = getQualityGrades(response);
-  console.log(qualityGrades);
   createImagesChart(response, imagesLabels, brightnessGrades, messGrades, triqGrades, qualityGrades);
 }
 
