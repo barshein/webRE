@@ -940,8 +940,9 @@ function imagesChart(response) {
   console.log(imagesLabels);
   var brightnessGrades = getBrightnessGrades(response);
   var qualityGrades = getQualityGrades(response);
+  var messGrades = getMessGrades(response);
   console.log(qualityGrades);
-  createImagesChart(response, imagesLabels, brightnessGrades, qualityGrades);
+  createImagesChart(response, imagesLabels, brightnessGrades, messGrades, qualityGrades);
 }
 
 function getImagesLabels(response) {
@@ -967,6 +968,15 @@ function getBrightnessGrades(response) {
   return brightnessGrades;
 }
 
+function getMessGrades(response) {
+  var messGrades = [];
+  for(let i = 0; i < resp.i_messy_rate.length; i++) {
+    grade = Math.round(resp.i_messy_rate[i][0] * 100);
+    messGrades.push(grade);
+  }
+  return messGrades;
+}
+
 function getQualityGrades(response) {
   var qualityGrades = [];
   for(let i = 0; i < resp.i_quality_rate.length; i++) {
@@ -976,7 +986,7 @@ function getQualityGrades(response) {
   return qualityGrades;
 }
 
-function createImagesChart(response, imagesLabels, brightnessGrades, qualityGrades) {
+function createImagesChart(response, imagesLabels, brightnessGrades, messGrades, qualityGrades) {
   new Chart("chart_ImagesGrades", {
     type: "line",
     data: {
@@ -990,6 +1000,11 @@ function createImagesChart(response, imagesLabels, brightnessGrades, qualityGrad
           data: qualityGrades,
           label: "Quality Grades",
           borderColor: "#3e95cd",
+          fill: false
+        }, { 
+          data: messGrades,
+          label: "Mess Grades",
+          borderColor: "#3cba9f",
           fill: false
         }
       ]
