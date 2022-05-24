@@ -304,7 +304,7 @@ window.onload = function() {
     document.getElementById("sendDataDiv").style.visibility = 'hidden';
 }
 
-var files;
+var files = [];
 var loginWay;
 var emailLogin;
 var descriptionFromUser;
@@ -379,10 +379,14 @@ function handleFileSelect(e) {
   if (!e.target.files) return;
 
   //To obtaine a File reference
-  files = e.target.files;
+  var newFiles = e.target.files;
+  for (var i = 0, l = newFiles.length; i < l; i++) {
+    files.push(newFiles[i]);
+  }
+  console.log(files);
 
   // Loop through the FileList and then to render image files as thumbnails.
-  for (var i = 0, f; (f = files[i]); i++) {
+  for (var i = 0, f; (f = newFiles[i]); i++) {
     //instantiate a FileReader object to read its contents into memory
     var fileReader = new FileReader();
 
@@ -424,6 +428,7 @@ jQuery(function($) {
     }).indexOf(id);
     if (elementPos !== -1) {
       AttachmentArray.splice(elementPos, 1);
+      files.splice(elementPos, 1);
     }
 
     //to remove image tag
