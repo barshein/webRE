@@ -10,8 +10,8 @@ be = Flask(__name__)
 def analyze():
     json = request.get_json()
     sessionId = json["sessionId"]
-    print("in be server - session ID is: " + sessionId)
-    # description, photos = getDataBySessionId(sessionId)
+    print("in be server - session ID is: " + str(sessionId))
+    description, photos = getDataBySessionId(sessionId)
     return str(random.randint(0,100))
 
 if __name__ == "__main__":
