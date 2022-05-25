@@ -1,71 +1,48 @@
 from flask import Flask, request
 import requests
-import common
+import mongodb
+
 api = Flask(__name__)
 
-def saveTextInDB(data):
-    print("text was save in DB")
-    # DO SOMETHING
-    # raise Exception("Sorry, no numbers below zero")
-
-
-def savePhotosInCloud(data):
-    print("photos was save in cloud")
-    # DO SOMETHING
-    # raise Exception("Sorry, no numbers below zero")
-
-def buildURL(haveText, havePhoto):
-    # have both
-    if haveText and havePhoto:
-        return "http://127.0.0.1:8080/both"
-    # have only text
-    if haveText and not havePhoto:
-        return "http://127.0.0.1:8080/text"
-    # have only photos
-    if havePhoto and not haveText:
-        return "http://127.0.0.1:8080/photos"
-
-
-@api.route('/serviceFlowTemp', methods=['POST'])
-def serviceFlowTemp():
-    print(request.get_json())
-    print("send to be")
-    res = requests.post("http://127.0.0.1:4040/analyzeText", json={'sr': 'data2'})
-    print(res)
-    print(res.text)
+@api.route('/', methods=['POST'])
+def saveData():
+    print("in api server - save data")
+    json = request.get_json()
+    mongodb.addData(json)
+    sessionId = {}
+    sessionId["sessionId"] = json["sessionId"]
+    print("send to be server")
+    res = requests.post("http://127.0.0.1:4040", json=sessionId)
+    print("res in api server - " + str(res.text))
+    email = json["email"]
+    print("api server update user : " + str(email) + " data")
+    mongodb.updateCustumerSessionsByEmail(email, json["sessionId"], res.text)
     return res.text
 
+@api.route('/getNextSessionID', methods=['GET'])
+def getNextSessionID():
+    return str(mongodb.getNextSessionIDFromDB())
 
+@api.route('/verifyLogin', methods =["POST"])
+def verfiyLogin():
+    print("verifyLogin in api")
+    json = request.get_json()
+    email = json["email"]
+    password = json["password"]
+    canLogin, name = mongodb.couldLogin(email, password)
+    if canLogin:
+        return name
+    return "0"
 
-# @api.route('/some', methods=['POST'])
-# def serviceFlow():
-    # data = request.get_json()
-    #
-    # # UPDATE ID NOT NULL
-    # haveText = False
-    # havePhoto = False
-    #
-    # # WRITE TO DBs
-    # try:
-    #     if haveText:
-    #         saveTextInDB(data)
-    #     if havePhoto:
-    #         savePhotosInCloud(data)
-    # except:
-    #     print("exception")
-    #     # DIFF MASSAGE - THROW TO CLIENT SIDE ERROR ?
-    #     # IF BOTH MISSING - THROW DIFF MASSAGE
-    #
-    #
-    # # IF EVERY THING IS FINE - SEND REQ TO BE- ENGINE
-    #
-    # # BUILD REQ CLASS
-    # # req = Request(text, photos)
-    # req = common.Request("text", "photos")
-    #
-    # url = buildURL(haveText, havePhoto)
-    # return requests.post(url, json={req})
-
+@api.route('/signUp', methods =["POST"])
+def signUp():
+    print("signUp in api")
+    json = request.get_json()
+    if not mongodb.isDBcontaionEmail(json["email"]):
+        print("save customer")
+        mongodb.addCustomer(json)
+        return "1"
+    return "0"
 
 if __name__ == "__main__":
     print("apiServer up in port: 5050")
