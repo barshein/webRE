@@ -3,7 +3,15 @@ import json
 
 def resetConfDB():
   conf.delete_many({})
-  conf.insert_one({"nextSessionID": "1"})
+  conf.insert_one({"nextSessionID": "0"})
+
+def resetDBs():
+  x = data.delete_many({})
+  print(x.deleted_count, " documents deleted.")
+  x = customer.delete_many({})
+  print(x.deleted_count, " customer deleted.")
+  resetConfDB()
+  print("conf reset")
 
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 mydb = myclient["realEstateDB"]
@@ -24,13 +32,8 @@ if "conf" in collist:
 else:
   resetConfDB()
 
-# x = data.delete_many({})
-# print(x.deleted_count, " documents deleted.")
-# x = customer.delete_many({})
-# print(x.deleted_count, " customer deleted.")
-# x = customer.delete_many({})
-# resetConfDB()
-# print("conf reset")
+# resetDBs()
+
 
 def isDBcontaionEmail(email):
   print("check if email : " + str(email) +" is in db")
