@@ -1,8 +1,16 @@
 import pymongo
 import json
 
+def resetConfDB():
+  conf.delete_many({})
+  conf.insert_one({"nextSessionID": "1"})
+
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 mydb = myclient["realEstateDB"]
+
+data = mydb["data"]
+customer = mydb["customer"]
+conf = mydb["conf"]
 
 collist = mydb.list_collection_names()
 if "data" in collist:
@@ -11,13 +19,18 @@ if "data" in collist:
 if "customer" in collist:
   print("The collection 'customer' exists.")
 
-data = mydb["data"]
-customer = mydb["customer"]
+if "conf" in collist:
+  print("The collection 'conf' exists.")
+else:
+  resetConfDB()
 
 # x = data.delete_many({})
 # print(x.deleted_count, " documents deleted.")
 # x = customer.delete_many({})
 # print(x.deleted_count, " customer deleted.")
+# x = customer.delete_many({})
+# resetConfDB()
+# print("conf reset")
 
 def isDBcontaionEmail(email):
   print("check if email : " + str(email) +" is in db")
@@ -34,7 +47,7 @@ def addData(json):
 
 def addCustomer(json):
   res = customer.insert_one(json)
-  print("is custumer saved - " + str(res.acknowledged))
+  print("is customer saved - " + str(res.acknowledged))
 
 def getDataBySessionId(sessionId):
   query = { "sessionId": sessionId }
@@ -69,3 +82,13 @@ def couldLogin(email, password):
   if info.__len__() == 0:
     return 0, ""
   return 1, info[0]["name"]
+
+def updateNextSessionId(nextSessionID):
+  newNextSessionId = nextSessionID + 1
+  newvalue = {"$set": {"nextSessionID": str(newNextSessionId)}}
+  conf.update_one({}, newvalue)
+
+def getNextSessionIDFromDB():
+  nextSessionID = int(list(conf.find())[0]["nextSessionID"])
+  updateNextSessionId(nextSessionID)
+  return nextSessionID

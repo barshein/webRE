@@ -3,8 +3,6 @@ import base64
 import requests
 from flask import Flask, render_template, send_from_directory
 from flask import request
-from mongodb import addCustomer, isDBcontaionEmail, updateCustumerSessionsByEmail, couldLogin
-
 
 comm = Flask(__name__)
 
@@ -20,32 +18,27 @@ def static_dir(path):
 @comm.route('/signUp', methods =["POST"])
 def signUp():
     print("signUp")
-    json = {}
     if request.method == "POST":
+        json = {}
         json["email"] = request.form.get("email")
-        if not isDBcontaionEmail(json["email"]):
-            json["name"] = request.form.get("name")
-            json["userName"] = request.form.get("userName")
-            json["password"] = request.form.get("password")
-            json["sessionIds"] = {}
-            print("save customer")
-            addCustomer(json)
-            return 1
-    return 0
+        json["name"] = request.form.get("name")
+        json["userName"] = request.form.get("userName")
+        json["password"] = request.form.get("password")
+        json["sessionIds"] = {}
+        res = requests.post("http://127.0.0.1:5050/signUp", json=json)
+        return res.text
+    return "0"
 
-@comm.route('/verfiyLogin', methods =["POST"])
+@comm.route('/verifyLogin', methods =["POST"])
 def verfiyLogin():
-    print("verfiyLogin")
-    json = {}
+    print("verifyLogin in communication")
     if request.method == "POST":
+        json={}
         json["email"] = request.form.get("email")
         json["password"] = request.form.get("password")
-        # return name to JS if could verify
-        canLogin, name = couldLogin(json["email"],json["password"])
-        if canLogin:
-            return name
-    return 0
-
+        res = requests.post("http://127.0.0.1:5050/verifyLogin", json=json)
+        return res.text
+    return "0"
 
 @comm.route('/', methods =["POST"])
 def sendServiceInfo():
@@ -53,22 +46,24 @@ def sendServiceInfo():
     json = {}
     if request.method == "POST":
         json["sessionId"] = getNewSessionId()
+        json["email"] = request.form.get("email")
         description = request.form.get("descriptionText")
         json["description"] = description
-        photos = list(request.files.listvalues())[0]
         json["photos"] = {}
-        for photo in photos:
-            json["photos"][photo.filename] = base64.b64encode(photo.stream.read()).decode("utf8")
+        photos = list(request.files.listvalues())
+        if len(photos) != 0:
+            photos = list(request.files.listvalues())[0]
+            for photo in photos:
+                json["photos"][photo.filename] = base64.b64encode(photo.stream.read()).decode("utf8")
         print("send to api server")
         res = requests.post("http://127.0.0.1:5050", json=json)
-        print("res in communication server - " + res.txt)
-        # updateCustumerSessionsByEmail(email, json["sessionId"], res.txt)
+        print("res in communication server - " + str(res.text))
         return res.text
     return my_form
 
 def getNewSessionId():
-    # get from ignite memory + update the memo by +1
-    return 1
+    sessionId = requests.get("http://127.0.0.1:5050/getNextSessionID")
+    return sessionId.text
 
 if __name__ == "__main__":
     print("communicationServer up in port: 8000")
