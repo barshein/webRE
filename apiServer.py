@@ -1,6 +1,7 @@
 from flask import Flask, request
 import requests
-from mongodb import addData
+from mongodb import addData, updateCustumerSessionsByEmail
+
 api = Flask(__name__)
 
 @api.route('/', methods=['POST'])
@@ -12,7 +13,10 @@ def saveData():
     sessionId["sessionId"] = json["sessionId"]
     print("send to be server")
     res = requests.post("http://127.0.0.1:4040", json=sessionId)
-    print("res in communication server - " + res.text)
+    print("res in api server - " + str(res.text))
+    email = json["email"]
+    print("api server update user : " + str(email) + " data")
+    updateCustumerSessionsByEmail(email, json["sessionId"], res.text)
     return res.text
 
 if __name__ == "__main__":
