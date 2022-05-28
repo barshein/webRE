@@ -330,11 +330,12 @@ function sendOnClick() {
     const url = '/';
     Http.open("POST", url);
     Http.send(formData);
+    document.getElementById("ResponseBanner").className = '';
 
     Http.onreadystatechange = (e) => {
       if(Http.readyState === XMLHttpRequest.DONE) {
+        document.getElementById("responseSpinner").className = 'hidden';
         console.log("response from server is:", Http.responseText)
-        document.getElementById("ResponseBanner").className = '';
         if (descriptionFromUser != "undefined" && descriptionFromUser != "") {
           document.getElementById("descriptionAccordion").className = 'accordion-item';
           loadDescriptionBanner(Http);
@@ -701,6 +702,7 @@ function verifyLogin(email, password) {
     }
   }
   // TODO: temporary returns true (should return false) - until the server is ready
+  loginWay = 'Local'
   return true;
 }
 
