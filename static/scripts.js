@@ -347,6 +347,20 @@ function sendOnClick() {
         loadImagesBanner(Http);
       }
     }
+
+    var allReportsformData = new FormData();
+    allReportsformData.append('email', emailLogin);  
+
+    const allReportsRequest = new XMLHttpRequest();
+    const allReportsUrl = '/getAllReports';
+    allReportsRequest.open("POST", allReportsUrl);
+    allReportsRequest.send(allReportsformData);
+
+    allReportsRequest.onreadystatechange = (e) => {
+      if(allReportsRequest.readyState === XMLHttpRequest.DONE) {
+        loadAllReports(allReportsRequest);
+      }
+    }
   }
   else {
     var myModal = new bootstrap.Modal(document.getElementById('loginModal'))
@@ -1041,4 +1055,8 @@ function createImagesChart(response, imagesLabels, brightnessGrades, messGrades,
       }
     }
   });
+}
+
+function loadAllReports(allReportsRequest) {
+  
 }
