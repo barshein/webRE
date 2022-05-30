@@ -1243,6 +1243,8 @@ function loadAllReports(allReportsRequest) {
 }
 
 function createLoadReportsButton(allReportsRequest) {
+  var oldReportsSec = document.getElementById("oldReports");
+  oldReportsSec.innerHTML = '';
   var loadReportsButton = document.createElement("loadReportsButton");
   loadReportsButton.innerHTML = "Load old reports";
   loadReportsButton.className = "btn btn-success btn-imgs";
@@ -1250,7 +1252,6 @@ function createLoadReportsButton(allReportsRequest) {
     console.log("The user has requested to load older reports")
     createTabs(allReportsRequest);
   };
-  var oldReportsSec = document.getElementById("oldReports");
   oldReportsSec.appendChild(loadReportsButton);
   var reportsInfo = document.createElement("reportsInfo");
   reportsInfo.id = "reportsInfo";
@@ -1314,14 +1315,14 @@ function createTabContent(allReportsRequest, reportIdx, lastReportIdx) {
   var reportIdxDisplay = reportIdx + 1;
   var div = document.createElement("div");
   div.id = "reportContent" + reportIdxDisplay;
-  var h3 = document.createElement("h3");
-  h3.textContent = "Report #" + reportIdxDisplay + " Analysis:";
+  var h4 = document.createElement("h4");
+  h4.textContent = "Report #" + reportIdxDisplay + " Analysis:";
   if (reportIdx == lastReportIdx) {
     div.className = "tab-pane fade show active";
   }
   else {
     div.className = "tab-pane fade";
   }
-  div.appendChild(h3);
+  div.appendChild(h4);
   return div;
 }
