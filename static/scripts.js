@@ -1238,17 +1238,90 @@ function loadAllReports(allReportsRequest) {
   console.log("There are " + Object.keys(allReportsRequest).length + " reports");
 
   if (Object.keys(allReportsRequest).length > 1) {
-    createLoadReportsButton();
+    createLoadReportsButton(allReportsRequest);
   }
 }
 
-function createLoadReportsButton() {
+function createLoadReportsButton(allReportsRequest) {
   var loadReportsButton = document.createElement("loadReportsButton");
   loadReportsButton.innerHTML = "Load old reports";
   loadReportsButton.className = "btn btn-success btn-imgs";
   loadReportsButton.onclick = function () {
     console.log("The user has requested to load older reports")
+    createTabs(allReportsRequest);
   };
   var oldReportsSec = document.getElementById("oldReports");
   oldReportsSec.appendChild(loadReportsButton);
+  var reportsInfo = document.createElement("reportsInfo");
+  reportsInfo.id = "reportsInfo";
+  oldReportsSec.appendChild(reportsInfo);
+}
+
+function createTabs(allReportsRequest) {
+  var reportsInfo = document.getElementById("reportsInfo");
+  reportsInfo.innerHTML = '';
+  var nav = document.createElement("div");
+  nav.className = "m-4";
+
+  var divTabs = document.createElement("ul");
+  divTabs.className = "nav nav-tabs";
+  divTabs.id = "myTab";
+
+  var divContent = document.createElement("div");
+  divContent.className = "tab-content";
+
+  for (let i = Object.keys(allReportsRequest).length - 2; i >= 0; i--) {
+    tabList = createTabList(allReportsRequest, i + 1, Object.keys(allReportsRequest).length - 1);
+    divTabs.appendChild(tabList);
+
+    tabContent = createTabContent(allReportsRequest, i, Object.keys(allReportsRequest).length - 2);
+    divContent.appendChild(tabContent);
+    if (Object.keys(allReportsRequest).length - 1 - i == 10) {
+      i = -1;
+    }
+  }
+
+  nav.appendChild(divTabs);
+  nav.appendChild(divContent);
+  reportsInfo.appendChild(nav);
+}
+
+function createTabList(allReportsRequest, reportIdx, lastReportIdx) {
+  var liTab = document.createElement("li");
+
+  liTab.className = "nav-item";
+  var inTab = document.createElement("a");
+  inTab.href = "#reportContent" + reportIdx;
+  if (reportIdx == lastReportIdx) {
+    inTab.className = "nav-link active";
+  }
+  else {
+    inTab.className = "nav-link";
+  }
+  inTab.textContent = "Report #" + reportIdx;
+
+  var tabTrigger = new bootstrap.Tab(inTab);
+  inTab.addEventListener("click", function(event){
+    event.preventDefault();
+    tabTrigger.show();
+  });
+
+  liTab.appendChild(inTab);
+  return liTab;
+}
+
+function createTabContent(allReportsRequest, reportIdx, lastReportIdx) {
+  var reportIdxDisplay = reportIdx + 1;
+  var div = document.createElement("div");
+  div.id = "reportContent" + reportIdxDisplay;
+  var h3 = document.createElement("h3");
+  h3.textContent = "Report #" + reportIdxDisplay + " Analysis:";
+  if (reportIdx == lastReportIdx) {
+    div.className = "tab-pane fade show active";
+  }
+  else {
+    div.className = "tab-pane fade";
+  }
+  div.appendChild(h3);
+  return div;
 }
