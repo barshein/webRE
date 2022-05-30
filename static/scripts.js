@@ -226,6 +226,180 @@ response = {
     "punctuation main response"]
 }
 
+allReportsResponse = {
+  0: {
+    "description": "First Report",
+    "num_of_images": -1,
+    "i_bright_rate": [
+        [
+            0.48525490196078436,
+            "desc",
+            "images\\tiki.png"
+        ],
+        [
+            0.6252156862745099,
+            "desc",
+            "images\\tiki_new.png"
+        ]
+    ],
+    "i_messy_rate": [
+        [
+            0.1211819052696228,
+            "desc",
+            "images\\tiki.png"
+        ],
+        [
+            0.1013462245464325,
+            "desc",
+            "images\\tiki_new.png"
+        ]
+    ],
+    "i_triq_model": [
+      [
+          0.48525490196078436,
+          "desc",
+          "images\\tiki.png"
+      ],
+      [
+          0.7252156862745099,
+          "desc",
+          "images\\tiki_new.png"
+      ]
+  ],
+    "i_quality_rate": [
+      [
+          0.48525490196078436,
+          "desc",
+          "images\\tiki.png"
+      ],
+      [
+          0.6252156862745099,
+          "desc",
+          "images\\tiki_new.png"
+      ]
+  ],
+    "grammar_model": {'issues': ['Possible spelling mistake found.', 'This sentence does not start with an uppercase letter.'], 'main_response': 'Please notice several grammar corrections', 'grade': 55, 'replacement_description': 'The apartment is big and beautiful, you should come see it'},
+    "semantic_model": [0.8119215686274509,
+      "semantic main response"],
+    "punctuation_model": [0.9619215686274509,
+      "punctuation main response"]  
+  },
+  1: {
+    "description": "Second Report",
+    "num_of_images": -1,
+    "i_bright_rate": [
+        [
+            0.48525490196078436,
+            "desc",
+            "images\\tiki.png"
+        ],
+        [
+            0.6252156862745099,
+            "desc",
+            "images\\tiki_new.png"
+        ]
+    ],
+    "i_messy_rate": [
+        [
+            0.1211819052696228,
+            "desc",
+            "images\\tiki.png"
+        ],
+        [
+            0.1013462245464325,
+            "desc",
+            "images\\tiki_new.png"
+        ]
+    ],
+    "i_triq_model": [
+      [
+          0.48525490196078436,
+          "desc",
+          "images\\tiki.png"
+      ],
+      [
+          0.7252156862745099,
+          "desc",
+          "images\\tiki_new.png"
+      ]
+  ],
+    "i_quality_rate": [
+      [
+          0.48525490196078436,
+          "desc",
+          "images\\tiki.png"
+      ],
+      [
+          0.6252156862745099,
+          "desc",
+          "images\\tiki_new.png"
+      ]
+  ],
+    "grammar_model": {'issues': ['Possible spelling mistake found.', 'This sentence does not start with an uppercase letter.'], 'main_response': 'Please notice several grammar corrections', 'grade': 55, 'replacement_description': 'The apartment is big and beautiful, you should come see it'},
+    "semantic_model": [0.8119215686274509,
+      "semantic main response"],
+    "punctuation_model": [0.9619215686274509,
+      "punctuation main response"]  
+  },
+  2: {
+    "description": "Third Report",
+    "num_of_images": -1,
+    "i_bright_rate": [
+        [
+            0.48525490196078436,
+            "desc",
+            "images\\tiki.png"
+        ],
+        [
+            0.6252156862745099,
+            "desc",
+            "images\\tiki_new.png"
+        ]
+    ],
+    "i_messy_rate": [
+        [
+            0.1211819052696228,
+            "desc",
+            "images\\tiki.png"
+        ],
+        [
+            0.1013462245464325,
+            "desc",
+            "images\\tiki_new.png"
+        ]
+    ],
+    "i_triq_model": [
+      [
+          0.48525490196078436,
+          "desc",
+          "images\\tiki.png"
+      ],
+      [
+          0.7252156862745099,
+          "desc",
+          "images\\tiki_new.png"
+      ]
+  ],
+    "i_quality_rate": [
+      [
+          0.48525490196078436,
+          "desc",
+          "images\\tiki.png"
+      ],
+      [
+          0.6252156862745099,
+          "desc",
+          "images\\tiki_new.png"
+      ]
+  ],
+    "grammar_model": {'issues': ['Possible spelling mistake found.', 'This sentence does not start with an uppercase letter.'], 'main_response': 'Please notice several grammar corrections', 'grade': 55, 'replacement_description': 'The apartment is big and beautiful, you should come see it'},
+    "semantic_model": [0.8119215686274509,
+      "semantic main response"],
+    "punctuation_model": [0.9619215686274509,
+      "punctuation main response"]  
+  }
+}
+
 window.addEventListener('DOMContentLoaded', event => {
 
     // Navbar shrink function
@@ -1058,5 +1232,23 @@ function createImagesChart(response, imagesLabels, brightnessGrades, messGrades,
 }
 
 function loadAllReports(allReportsRequest) {
-  
+  // TODO: delete the following line:
+  allReportsRequest = allReportsResponse;
+
+  console.log("There are " + Object.keys(allReportsRequest).length + " reports");
+
+  if (Object.keys(allReportsRequest).length > 1) {
+    createLoadReportsButton();
+  }
+}
+
+function createLoadReportsButton() {
+  var loadReportsButton = document.createElement("loadReportsButton");
+  loadReportsButton.innerHTML = "Load old reports";
+  loadReportsButton.className = "btn btn-success btn-imgs";
+  loadReportsButton.onclick = function () {
+    console.log("The user has requested to load older reports")
+  };
+  var oldReportsSec = document.getElementById("oldReports");
+  oldReportsSec.appendChild(loadReportsButton);
 }
