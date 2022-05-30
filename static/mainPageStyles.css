@@ -11887,8 +11887,7 @@ ul.thumb-Images li {
 
 .descriptionAnalysis-grid {
   display: grid;
-  grid-template-columns: 50% 50%;
-  /* grid-template-rows: 78% 4% 18%; */
+  grid-template-columns: 33% 33% 33%;
   grid-auto-flow: row;
 }
 
@@ -11900,6 +11899,11 @@ ul.thumb-Images li {
 .semanticAnalysis-grid {
   grid-column-start: 2;
   grid-column-end: 3;
+}
+
+.punctuationAnalysis-grid {
+  grid-column-start: 3;
+  grid-column-end: 4;
 }
 
 .circle {

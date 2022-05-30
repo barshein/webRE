@@ -221,7 +221,9 @@ response = {
 ],
   "grammar_model": {'issues': ['Possible spelling mistake found.', 'This sentence does not start with an uppercase letter.'], 'main_response': 'Please notice several grammar corrections', 'grade': 55, 'replacement_description': 'The apartment is big and beautiful, you should come see it'},
   "semantic_model": [0.8119215686274509,
-    "semantic main response"]
+    "semantic main response"],
+  "punctuation_model": [0.9619215686274509,
+    "punctuation main response"]
 }
 
 window.addEventListener('DOMContentLoaded', event => {
@@ -767,8 +769,9 @@ function loadDescriptionBanner(Http) {
   document.getElementById("uploadedDescription").textContent = descriptionFromUser;
 
   // grammar description response
-  document.getElementById("descriptionGrammarGrade").textContent = response.grammar_model.grade + "%";
-  document.getElementById("descriptionGrammarGrade").style.color = colorGradeDecider(response.grammar_model.grade);
+  var grammarGrade = response.grammar_model.grade;
+  document.getElementById("descriptionGrammarGrade").textContent = grammarGrade + "%";
+  document.getElementById("descriptionGrammarGrade").style.color = colorGradeDecider(grammarGrade);
   document.getElementById("grammarDescriptionMainResponse").textContent = response.grammar_model.main_response;
   grammarDescriptionIssuesList(response);
   document.getElementById("grammarDescriptionSuggestion").textContent = response.grammar_model.replacement_description;
@@ -781,14 +784,19 @@ function loadDescriptionBanner(Http) {
   document.getElementById("descriptionSemanticGrade").style.color = colorGradeDecider(semanticGrade);
   document.getElementById("semanticDescriptionMainResponse").textContent = response.semantic_model[1];
 
-  loadDescriptionGrades();
+  // punctuation description response
+  var punctuationGrade = Math.round(response.punctuation_model[0] * 100);
+  document.getElementById("descriptionPunctuationGrade").textContent = punctuationGrade + "%";
+  document.getElementById("descriptionPunctuationGrade").style.color = colorGradeDecider(punctuationGrade);
+  document.getElementById("punctuationDescriptionMainResponse").textContent = response.punctuation_model[1];
+  
+  loadDescriptionGrades(grammarGrade, semanticGrade, punctuationGrade);
 }
 
-function loadDescriptionGrades() {
-  var xValues = ["Grammar", "Positive semantic"];
-  var yValues = [response.grammar_model.grade, 70];
-  grammarGradeColor = colorGradeDecider(response.grammar_model.grade)
-  var barColors = [grammarGradeColor, "green"];
+function loadDescriptionGrades(grammarGrade, semanticGrade, punctuationGrade) {
+  var xValues = ["Grammar", "Positive semantic", "Punctuation"];
+  var yValues = [grammarGrade, semanticGrade, punctuationGrade];
+  var barColors = [colorGradeDecider(grammarGrade), colorGradeDecider(semanticGrade), colorGradeDecider(punctuationGrade)];
 
   new Chart("chart_DescriptionGradesByModel", {
     type: "bar",
