@@ -342,6 +342,7 @@ function sendOnClick() {
           document.getElementById("descriptionAccordion").className = 'accordion-item';
           loadDescriptionBanner(Http);
         }
+        // TODO: add a check if images were uploaded
         document.getElementById("imagesAccordion").className = 'accordion-item';
         loadImagesBanner(Http);
       }
