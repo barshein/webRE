@@ -940,54 +940,54 @@ function colorMessGradeDecider(grade) {
   return "green"
 }
 
-function grammarDescriptionIssuesList(response) {
-  if (response.grammar_model.issues && response.grammar_model.issues.length > 0) {
-    var ul = document.getElementById("grammarDescriptionIssuesList");
+function grammarDescriptionIssuesList(report) {
+  if (report.grammar_model.issues && report.grammar_model.issues.length > 0) {
+    var ul = document.createElement("ul");
     ul.textContent = "Possible issues are: "
     ul.style.textAlign = "left"
-    for (let i = 0; i < response.grammar_model.issues.length; i++) {
+    for (let i = 0; i < report.grammar_model.issues.length; i++) {
       var li = document.createElement("li");
-      li.appendChild(document.createTextNode(response.grammar_model.issues[i]));
+      li.appendChild(document.createTextNode(report.grammar_model.issues[i]));
       li.style.textAlign = "left"
       ul.appendChild(li);
     }
+    return ul;
   }
 }
 
 function loadDescriptionBanner(Http) {
-  document.getElementById("uploadedDescription").textContent = descriptionFromUser;
+  var accordionDescription = document.getElementById("accordionDescription");
+  accordionDescription.innerHTML = '';
 
-  // grammar description response
-  var grammarGrade = response.grammar_model.grade;
-  document.getElementById("descriptionGrammarGrade").textContent = grammarGrade + "%";
-  document.getElementById("descriptionGrammarGrade").style.color = colorGradeDecider(grammarGrade);
-  document.getElementById("grammarDescriptionMainResponse").textContent = response.grammar_model.main_response;
-  grammarDescriptionIssuesList(response);
-  document.getElementById("grammarDescriptionSuggestion").textContent = response.grammar_model.replacement_description;
-  generatedNumber = "The Grammar grade for the uploaded description is: "+Http.responseText;
-  document.getElementById("generatedNumber").textContent = generatedNumber;
-
-  // semantic description response
-  var semanticGrade = Math.round(response.semantic_model[0] * 100);
-  document.getElementById("descriptionSemanticGrade").textContent = semanticGrade + "%";
-  document.getElementById("descriptionSemanticGrade").style.color = colorGradeDecider(semanticGrade);
-  document.getElementById("semanticDescriptionMainResponse").textContent = response.semantic_model[1];
-
-  // punctuation description response
-  var punctuationGrade = Math.round(response.punctuation_model[0] * 100);
-  document.getElementById("descriptionPunctuationGrade").textContent = punctuationGrade + "%";
-  document.getElementById("descriptionPunctuationGrade").style.color = colorGradeDecider(punctuationGrade);
-  document.getElementById("punctuationDescriptionMainResponse").textContent = response.punctuation_model[1];
-  
-  loadDescriptionGrades(grammarGrade, semanticGrade, punctuationGrade);
+  accordionDescription.appendChild(getCurrentDescription(response))
+  accordionDescription.appendChild(createDescriptionModelsAnalysis(response));  
+  accordionDescription.appendChild(createDescriptionChart(response));  
 }
 
-function loadDescriptionGrades(grammarGrade, semanticGrade, punctuationGrade) {
+function getCurrentDescription(report) {
+  var p = document.createElement("p");
+  p.textContent = descriptionFromUser;
+  p.className = "boxed";
+  return p;
+}
+
+function createDescriptionChart(report) {
+  var div = document.createElement("div");
+  div.className = "canvas-container";
+
+  var canvas = document.createElement("canvas");
+  canvas.id = "chart_DescriptionGradesByModel";
+  canvas.style.width = "100%";
+  canvas.style.maxWidth = "600px";
+
+  var grammarGrade = report.grammar_model.grade;
+  var semanticGrade = Math.round(report.semantic_model[0] * 100);
+  var punctuationGrade = Math.round(report.punctuation_model[0] * 100);
   var xValues = ["Grammar", "Positive semantic", "Punctuation"];
   var yValues = [grammarGrade, semanticGrade, punctuationGrade];
   var barColors = [colorGradeDecider(grammarGrade), colorGradeDecider(semanticGrade), colorGradeDecider(punctuationGrade)];
-
-  new Chart("chart_DescriptionGradesByModel", {
+  
+  new Chart(canvas, {
     type: "bar",
     data: {
       labels: xValues,
@@ -1013,6 +1013,9 @@ function loadDescriptionGrades(grammarGrade, semanticGrade, punctuationGrade) {
       }
     }
   });
+  
+  div.appendChild(canvas);
+  return div;
 }
 
 function DivCreator(values, modelName) {
@@ -1356,7 +1359,60 @@ function createDescriptionOldReport(report) {
   descriptionContent.appendChild(cardTitle);
   descriptionContent.appendChild(getDescription(report));
 
+  descriptionContent.appendChild(createDescriptionModelsAnalysis(report));
+  descriptionContent.appendChild(createDescriptionChart(report));
+  
   return descriptionContent;
+}
+
+function createDescriptionModelsAnalysis(report) {
+  var section = document.createElement("section");
+  section.className = "descriptionAnalysis-grid";
+
+  section.appendChild(createGrammarAnalysis(report));
+  section.appendChild(createSemanticAnalysis(report));
+  section.appendChild(createPunctuationAnalysis(report));
+  return section;
+}
+
+function createGrammarAnalysis(report) {
+  var div = document.createElement("div");
+  div.className = "grammarAnalysis-grid";
+  
+  var title = document.createElement("strong");
+  title.style.textDecoration = "underline";
+  title.style.fontSize = "larger";
+  title.textContent = "Grammar Analysis";
+  div.appendChild(title);
+  
+  var grammarGrade = report.grammar_model.grade;
+  var spanGrade = document.createElement("span");
+  spanGrade.className = "circle";
+  spanGrade.textContent = grammarGrade + "%";
+  spanGrade.style.color = colorGradeDecider(grammarGrade);
+  div.appendChild(spanGrade);
+
+  var pMainResponse = document.createElement("p");
+  pMainResponse.textContent = response.grammar_model.main_response;
+  div.appendChild(pMainResponse);
+
+  div.appendChild(grammarDescriptionIssuesList(report));
+  div.appendChild(suggestedDescription(report));
+
+  return div;
+}
+
+function suggestedDescription(report) {
+  var divReplacementDescription = document.createElement("div");
+  var replacementDescription = document.createElement("strong");
+  replacementDescription.textContent = "Our suggested description is: ";
+  divReplacementDescription.style.textAlign = "left";
+  divReplacementDescription.appendChild(replacementDescription);
+  
+  var pDivReplacementDescription = document.createElement("p");
+  pDivReplacementDescription.textContent = report.grammar_model.replacement_description;
+  divReplacementDescription.appendChild(pDivReplacementDescription);
+  return divReplacementDescription;
 }
 
 function getDescription(report) {
@@ -1364,6 +1420,54 @@ function getDescription(report) {
   p.textContent = report.description;
   p.className = "boxed";
   return p;
+}
+
+function createSemanticAnalysis(report) {
+  var div = document.createElement("div");
+  div.className = "semanticAnalysis-grid";
+  
+  var title = document.createElement("strong");
+  title.style.textDecoration = "underline";
+  title.style.fontSize = "larger";
+  title.textContent = "Semantic Analysis";
+  div.appendChild(title);
+  
+  var semanticGrade = Math.round(report.semantic_model[0] * 100);
+  var spanGrade = document.createElement("span");
+  spanGrade.className = "circle";
+  spanGrade.textContent = semanticGrade + "%";
+  spanGrade.style.color = colorGradeDecider(semanticGrade);
+  div.appendChild(spanGrade);
+
+  var pMainResponse = document.createElement("p");
+  pMainResponse.textContent = report.semantic_model[1];
+  div.appendChild(pMainResponse);
+
+  return div;
+}
+
+function createPunctuationAnalysis(report) {
+  var div = document.createElement("div");
+  div.className = "punctuationAnalysis-grid";
+  
+  var title = document.createElement("strong");
+  title.style.textDecoration = "underline";
+  title.style.fontSize = "larger";
+  title.textContent = "Punctuation Analysis";
+  div.appendChild(title);
+  
+  var punctuationGrade = Math.round(report.punctuation_model[0] * 100);
+  var spanGrade = document.createElement("span");
+  spanGrade.className = "circle";
+  spanGrade.textContent = punctuationGrade + "%";
+  spanGrade.style.color = colorGradeDecider(punctuationGrade);
+  div.appendChild(spanGrade);
+
+  var pMainResponse = document.createElement("p");
+  pMainResponse.textContent = report.punctuation_model[1]
+  div.appendChild(pMainResponse);
+
+  return div;
 }
 
 function createImagesOldReport(report) {
