@@ -1315,14 +1315,68 @@ function createTabContent(allReportsRequest, reportIdx, lastReportIdx) {
   var reportIdxDisplay = reportIdx + 1;
   var div = document.createElement("div");
   div.id = "reportContent" + reportIdxDisplay;
-  var h4 = document.createElement("h4");
-  h4.textContent = "Report #" + reportIdxDisplay + " Analysis:";
   if (reportIdx == lastReportIdx) {
     div.className = "tab-pane fade show active";
   }
   else {
     div.className = "tab-pane fade";
   }
-  div.appendChild(h4);
+  pageContent = createOldReportContent(allReportsRequest[reportIdx]);
+  div.appendChild(pageContent);
   return div;
+}
+
+function createOldReportContent(report) {
+  console.log(report);
+  var pageContent = document.createElement("div");
+  pageContent.className = "images-card-deck-reports accordion-body";
+
+  if (report.description != "undefined" && report.description != "") {
+    descriptionContent = createDescriptionOldReport(report);
+    pageContent.appendChild(descriptionContent);
+  }
+  if (report.photos != "undefined" && report.photos != {}) {
+    imagesContent = createImagesOldReport(report);
+    pageContent.appendChild(imagesContent);
+  }
+  return pageContent;
+}
+
+function createDescriptionOldReport(report) {
+  var descriptionContent = document.createElement("div");
+  descriptionContent.className = "card cardImages"
+  var cardBody = document.createElement("div");
+  cardBody.className = "card-body";
+  var cardTitle = document.createElement("p");
+  cardTitle.textContent = "Description Analysis";
+  cardTitle.style.fontSize = "larger";
+  cardBody.appendChild(cardTitle);
+  descriptionContent.appendChild(cardBody);
+
+  descriptionContent.appendChild(cardTitle);
+  descriptionContent.appendChild(getDescription(report));
+
+  return descriptionContent;
+}
+
+function getDescription(report) {
+  var p = document.createElement("p");
+  p.textContent = report.description;
+  p.className = "boxed";
+  return p;
+}
+
+function createImagesOldReport(report) {
+  var imagesContent = document.createElement("div");
+  imagesContent.className = "card cardImages"
+  var cardBody = document.createElement("div");
+  cardBody.className = "card-body";
+  var cardTitle = document.createElement("p");
+  cardTitle.textContent = "Images Analysis";
+  cardTitle.style.fontSize = "larger";
+  cardBody.appendChild(cardTitle);
+  imagesContent.appendChild(cardBody);
+  imagesContent.appendChild(cardTitle);
+
+  return imagesContent;
 }
