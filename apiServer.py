@@ -9,10 +9,11 @@ def saveData():
     print("in api server - save data")
     json = request.get_json()
     mongodb.addData(json)
-    sessionId = {}
-    sessionId["sessionId"] = json["sessionId"]
-    print("send to be server")
-    res = requests.post("http://127.0.0.1:4040", json=sessionId)
+    data = {}
+    description, photos = mongodb.getDataBySessionId(json["sessionId"])
+    data["description"] = description
+    data["photos"] = photos
+    res = requests.post("http://127.0.0.1:4040", json=data)
     print("res in api server - " + str(res.text))
     email = json["email"]
     print("api server update user : " + str(email) + " data")
