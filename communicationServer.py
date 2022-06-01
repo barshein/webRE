@@ -59,7 +59,21 @@ def sendServiceInfo():
         res = requests.post("http://127.0.0.1:5050", json=json)
         print("res in communication server - " + str(res.text))
         return res.text
-    return my_form
+    return my_form()
+
+
+@comm.route('/getAllReports', methods =["POST"])
+def getReportsData():
+    print("in communication server - get reports")
+    if request.method == "POST":
+        json = {}
+        json["email"] = request.form.get("email")
+        print("send to api server - get reports ")
+        res = requests.post("http://127.0.0.1:5050/getAllReports", json=json)
+        print("return reports in communication server ")
+        return res
+    return my_form()
+
 
 def getNewSessionId():
     sessionId = requests.get("http://127.0.0.1:5050/getNextSessionID")
