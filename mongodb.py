@@ -37,7 +37,6 @@ else:
 
 # resetDBs()
 
-
 def isDBcontaionEmail(email):
   print("check if email : " + str(email) +" is in db")
   query = {"email": email}
@@ -110,3 +109,19 @@ def getNextSessionIDFromDB():
   nextSessionID = int(list(conf.find())[0]["nextSessionID"])
   updateNextSessionId(nextSessionID)
   return nextSessionID
+
+def getAllReports(email):
+  reportsJson = {}
+  sessions = json.loads(getCustomerSessionsByEmail(email))
+  sessionIDs = sorted(list(sessions.keys()))
+  sessionIdCounter = 0
+  for id in sessionIDs:
+    sessionData = {}
+    description, dbPhotos = getDataBySessionId(id)
+    sessionData["description"] = description
+    sessionData["photos"] = dbPhotos
+    sessionData["result"] = sessions.get(id)
+    reportsJson[sessionIdCounter] = sessionData
+    sessionIdCounter = sessionIdCounter + 1
+
+  return reportsJson
