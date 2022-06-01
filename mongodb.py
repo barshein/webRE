@@ -16,14 +16,14 @@ def resetDBs():
   resetConfDB()
   print("conf reset")
 
-myclient = pymongo.MongoClient('mongodb+srv://sheinb:barbar@realestatedb.mxbu2.mongodb.net/?retryWrites=true&w=majority')
-mydb = myclient.get_database("realEstateDB")
+client = pymongo.MongoClient('mongodb+srv://sheinb:barbar@realestatedb.mxbu2.mongodb.net/?retryWrites=true&w=majority')
+db = client.get_database("realEstateDB")
 
-data = mydb.data
-customer = mydb.customer
-conf = mydb.conf
+data = db.data
+customer = db.customer
+conf = db.conf
 
-collist = mydb.list_collection_names()
+collist = db.list_collection_names()
 if "data" in collist:
   print("The collection 'data' exists.")
 
