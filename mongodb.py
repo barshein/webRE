@@ -1,5 +1,8 @@
 import pymongo
 import json
+import bcrypt
+import hashlib
+
 
 def resetConfDB():
   conf.delete_many({})
@@ -49,6 +52,11 @@ def addData(json):
   print("is data saved - " + str(res.acknowledged))
 
 def addCustomer(json):
+  salt = str(bcrypt.gensalt(), 'utf-8')
+  json["salt"] = salt
+  password = json["password"]
+  password = password + salt
+  json["password"] = hashlib.sha256(password.encode()).hexdigest()
   res = customer.insert_one(json)
   print("is customer saved - " + str(res.acknowledged))
 
