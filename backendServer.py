@@ -2,7 +2,6 @@ import random
 from flask import Flask, request
 from pymongo import settings
 
-from mongodb import getDataBySessionId
 import io
 import os
 import PIL.Image as Image
@@ -14,18 +13,20 @@ be = Flask(__name__)
 # both - text and photos endpoint
 @be.route('/', methods=['POST'])
 def analyze():
+    print("in be server")
+    path = os.path.dirname(os.path.realpath(__file__)) + "\\bar\\"
     json = request.get_json()
-    sessionId = json["sessionId"]
-    print("in be server - session ID is: " + str(sessionId))
-    description, photos = getDataBySessionId(sessionId)
-    # firstPhoto = photos.get('d1.jpg')
-    # byte_data = str.encode(firstPhoto)
-    # b = base64.b64decode(byte_data)
-    # image = Image.open(io.BytesIO(b))
-    # path = os.path.dirname(os.path.realpath(__file__))
-    # filename = "hihi.jpg"
-    # fullpath = path + "\\bar\\" + filename # need to open the folder first!
-    # image.save(fullpath)
+    description = json["description"]
+    photos = json["photos"]
+    photosFileNames = list(photos.keys())
+    for fileName in photosFileNames:
+        photo = photos.get(fileName)
+        byte_data = str.encode(photo)
+        parsedPhoto = base64.b64decode(byte_data)
+        image = Image.open(io.BytesIO(parsedPhoto))
+        fullpath = path + fileName  # need to open the folder first!
+        image.save(fullpath)
+
     return str(random.randint(0,100))
 
 if __name__ == "__main__":
