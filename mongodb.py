@@ -16,12 +16,12 @@ def resetDBs():
   resetConfDB()
   print("conf reset")
 
-myclient = pymongo.MongoClient("mongodb://localhost:27017/")
-mydb = myclient["realEstateDB"]
+myclient = pymongo.MongoClient('mongodb+srv://sheinb:barbar@realestatedb.mxbu2.mongodb.net/?retryWrites=true&w=majority')
+mydb = myclient.get_database("realEstateDB")
 
-data = mydb["data"]
-customer = mydb["customer"]
-conf = mydb["conf"]
+data = mydb.data
+customer = mydb.customer
+conf = mydb.conf
 
 collist = mydb.list_collection_names()
 if "data" in collist:
@@ -60,8 +60,8 @@ def addCustomer(json):
   print("is customer saved - " + str(res.acknowledged))
 
 def getDataBySessionId(sessionId):
-  query = { "sessionId": sessionId }
-  info = list(data.find(query, { "sessionId": 0 }))[0]
+  query = {"sessionId": str(sessionId)}
+  info = list(data.find(query))[0]
   description = info["description"]
   dbPhotos = info["photos"]
   # photosList = []
@@ -113,14 +113,16 @@ def getNextSessionIDFromDB():
 def getAllReports(email):
   reportsJson = {}
   sessions = json.loads(getCustomerSessionsByEmail(email))
-  sessionIDs = sorted(list(sessions.keys()))
+  sessionIDs = list(sessions.keys())
+  sessionIDsList = [int(i) for i in sessionIDs]
+  sessionIDsList = sorted(sessionIDsList)
   sessionIdCounter = 0
-  for id in sessionIDs:
+  for id in sessionIDsList:
     sessionData = {}
     description, dbPhotos = getDataBySessionId(id)
     sessionData["description"] = description
     sessionData["photos"] = dbPhotos
-    sessionData["result"] = sessions.get(id)
+    sessionData["result"] = sessions.get(str(id))
     reportsJson[sessionIdCounter] = sessionData
     sessionIdCounter = sessionIdCounter + 1
 
