@@ -44,6 +44,13 @@ def signUp():
         return "1"
     return "0"
 
+@api.route('/getAllReports', methods =["POST"])
+def getReportsData():
+    print("in api server - get reports")
+    json = request.get_json()
+    email = json["email"]
+    return mongodb.getAllReports(email)
+
 if __name__ == "__main__":
     print("apiServer up in port: 5050")
     api.run(port=5050)
