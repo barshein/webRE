@@ -87,8 +87,15 @@ def updateCustumerSessionsByEmail(email, newSessionId, SessionResult):
   newvalues = {"$set": {"sessionIds": json.dumps(sessionIds)}}
   customer.update_one(query, newvalues)
 
+def getSaltByEmail(email):
+  salt = list(customer.find({"email": email}))[0]["salt"]
+  return salt
+
 def couldLogin(email, password):
-  query = {"email": email, "password": password}
+  salt = getSaltByEmail(email)
+  hashPass = password + salt
+  hashPass = hashlib.sha256(hashPass.encode()).hexdigest()
+  query = {"email": email, "password": hashPass}
   info = list(customer.find(query))
   if info.__len__() == 0:
     return 0, ""
