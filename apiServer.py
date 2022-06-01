@@ -29,9 +29,10 @@ def verfiyLogin():
     json = request.get_json()
     email = json["email"]
     password = json["password"]
-    canLogin, name = mongodb.couldLogin(email, password)
-    if canLogin:
-        return name
+    if mongodb.isDBcontaionEmail(email):
+        canLogin, name = mongodb.couldLogin(email, password)
+        if canLogin:
+            return name
     return "0"
 
 @api.route('/signUp', methods =["POST"])
