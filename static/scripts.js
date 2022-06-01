@@ -228,6 +228,7 @@ response = {
 
 allReportsResponse = {
   0: {
+    "photos": {},
     "description": "First Report",
     "num_of_images": -1,
     "i_bright_rate": [
@@ -285,6 +286,7 @@ allReportsResponse = {
       "punctuation main response"]  
   },
   1: {
+    "photos": {1:"hey"},
     "description": "Second Report",
     "num_of_images": -1,
     "i_bright_rate": [
@@ -342,6 +344,7 @@ allReportsResponse = {
       "punctuation main response"]  
   },
   2: {
+    "photos": {1:"hey"},
     "description": "Third Report",
     "num_of_images": -1,
     "i_bright_rate": [
@@ -1338,9 +1341,9 @@ function createOldReportContent(report) {
     descriptionContent = createDescriptionOldReport(report);
     pageContent.appendChild(descriptionContent);
   }
-  if (report.photos != "undefined" && report.photos != {}) {
+  if (report.photos != "undefined" && !(Object.keys(report.photos).length === 0)) {
     imagesContent = createImagesOldReport(report);
-    pageContent.appendChild(imagesContent);
+    pageContent.appendChild(imagesContent);  
   }
   return pageContent;
 }
