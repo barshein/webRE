@@ -882,6 +882,7 @@ function signupForm() {
   Http.onreadystatechange = (e) => {
     if(Http.readyState === XMLHttpRequest.DONE) {
       if (Http.responseText == 1) {
+        document.getElementById("emailIsTaken").className = 'hidden';
         document.getElementById("validSignup").className = '';
         console.log("Sign up succeeded");
       }
