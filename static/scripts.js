@@ -543,7 +543,9 @@ function sendOnClick() {
         // TODO: add a check if images were uploaded
         document.getElementById("imagesAccordion").className = 'accordion-item';
         // TODO: change response to Http
-        document.getElementById("accordionImages").appendChild(loadImagesBanner(response, files));
+        accordionImages = document.getElementById("accordionImages");
+        accordionImages.innerHTML = '';
+        accordionImages.appendChild(loadImagesBanner(response, files));
       }
     }
 

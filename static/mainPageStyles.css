@@ -11944,12 +11944,14 @@ ul.thumb-Images li {
 }
 
 .cardImages {
+  margin-top: 10px;
   width: 100%;
   border: 1px solid #e5e5e5 !important;
 }
 
 .images-card-deck-reports{
   margin-top: 10px;
+  margin-bottom: 10px;
   display: grid;
   margin-left: auto;
   grid-template-rows: 1fr, 1fr;
