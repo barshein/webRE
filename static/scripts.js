@@ -908,8 +908,8 @@ function verifyLogin(email, password) {
     if(Http.readyState === XMLHttpRequest.DONE) {
       console.log("response for sign in from server is:", Http.responseText)
       if (Http.responseText != 0) {
-        // when server is ready : chaneg logged name to Http.responseText
-        var loggedName = email;
+        // TODO: when server is ready : chaneg logged name to Http.responseText - DONE?
+        var loggedName = Http.responseText;
         generalLogin(loggedName, email)
         loginWay = 'Local'
         return true;
