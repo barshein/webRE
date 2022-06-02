@@ -235,48 +235,48 @@ allReportsResponse = {
         [
             0.48525490196078436,
             "desc",
-            "images\\tiki.png"
+            "images\\photoName.png"
         ],
         [
             0.6252156862745099,
             "desc",
-            "images\\tiki_new.png"
+            "images\\photoName1.png"
         ]
     ],
     "i_messy_rate": [
         [
             0.1211819052696228,
             "desc",
-            "images\\tiki.png"
+            "images\\photoName.png"
         ],
         [
             0.1013462245464325,
             "desc",
-            "images\\tiki_new.png"
+            "images\\photoName1.png"
         ]
     ],
     "i_triq_model": [
       [
           0.48525490196078436,
           "desc",
-          "images\\tiki.png"
+          "images\\photoName.png"
       ],
       [
           0.7252156862745099,
           "desc",
-          "images\\tiki_new.png"
+          "images\\photoName1.png"
       ]
   ],
     "i_quality_rate": [
       [
           0.48525490196078436,
           "desc",
-          "images\\tiki.png"
+          "images\\photoName.png"
       ],
       [
           0.6252156862745099,
           "desc",
-          "images\\tiki_new.png"
+          "images\\photoName1.png"
       ]
   ],
     "grammar_model": {'issues': ['Possible spelling mistake found.', 'This sentence does not start with an uppercase letter.'], 'main_response': 'Please notice several grammar corrections', 'grade': 55, 'replacement_description': 'The apartment is big and beautiful, you should come see it'},
@@ -286,55 +286,55 @@ allReportsResponse = {
       "punctuation main response"]  
   },
   1: {
-    "photos": {1:"hey"},
+    "photos": {},
     "description": "Second Report",
-    "num_of_images": -1,
+    "num_of_images": "not enough images",
     "i_bright_rate": [
         [
             0.48525490196078436,
             "desc",
-            "images\\tiki.png"
+            "images\\photoName.png"
         ],
         [
             0.6252156862745099,
             "desc",
-            "images\\tiki_new.png"
+            "images\\photoName1.png"
         ]
     ],
     "i_messy_rate": [
         [
             0.1211819052696228,
             "desc",
-            "images\\tiki.png"
+            "images\\photoName.png"
         ],
         [
             0.1013462245464325,
             "desc",
-            "images\\tiki_new.png"
+            "images\\photoName1.png"
         ]
     ],
     "i_triq_model": [
       [
           0.48525490196078436,
           "desc",
-          "images\\tiki.png"
+          "images\\photoName.png"
       ],
       [
           0.7252156862745099,
           "desc",
-          "images\\tiki_new.png"
+          "images\\photoName1.png"
       ]
   ],
     "i_quality_rate": [
       [
           0.48525490196078436,
           "desc",
-          "images\\tiki.png"
+          "images\\photoName.png"
       ],
       [
           0.6252156862745099,
           "desc",
-          "images\\tiki_new.png"
+          "images\\photoName1.png"
       ]
   ],
     "grammar_model": {'issues': ['Possible spelling mistake found.', 'This sentence does not start with an uppercase letter.'], 'main_response': 'Please notice several grammar corrections', 'grade': 55, 'replacement_description': 'The apartment is big and beautiful, you should come see it'},
@@ -344,55 +344,55 @@ allReportsResponse = {
       "punctuation main response"]  
   },
   2: {
-    "photos": {1:"hey"},
+    "photos": {},
     "description": "Third Report",
     "num_of_images": -1,
     "i_bright_rate": [
         [
             0.48525490196078436,
             "desc",
-            "images\\tiki.png"
+            "images\\photoName.png"
         ],
         [
             0.6252156862745099,
             "desc",
-            "images\\tiki_new.png"
+            "images\\photoName1.png"
         ]
     ],
     "i_messy_rate": [
         [
             0.1211819052696228,
             "desc",
-            "images\\tiki.png"
+            "images\\photoName.png"
         ],
         [
             0.1013462245464325,
             "desc",
-            "images\\tiki_new.png"
+            "images\\photoName1.png"
         ]
     ],
     "i_triq_model": [
       [
           0.48525490196078436,
           "desc",
-          "images\\tiki.png"
+          "images\\photoName.png"
       ],
       [
           0.7252156862745099,
           "desc",
-          "images\\tiki_new.png"
+          "images\\photoName1.png"
       ]
   ],
     "i_quality_rate": [
       [
           0.48525490196078436,
           "desc",
-          "images\\tiki.png"
+          "images\\photoName.png"
       ],
       [
           0.6252156862745099,
           "desc",
-          "images\\tiki_new.png"
+          "images\\photoName1.png"
       ]
   ],
     "grammar_model": {'issues': ['Possible spelling mistake found.', 'This sentence does not start with an uppercase letter.'], 'main_response': 'Please notice several grammar corrections', 'grade': 55, 'replacement_description': 'The apartment is big and beautiful, you should come see it'},
@@ -402,6 +402,26 @@ allReportsResponse = {
       "punctuation main response"]  
   }
 }
+// TODO: delete also photoinb.txt file
+window.addEventListener('DOMContentLoaded', event => {
+  var rawFile = new XMLHttpRequest();
+  rawFile.open("GET", "static/photoinb.txt", false);
+  rawFile.onreadystatechange = function ()
+  {
+    if(rawFile.readyState === 4)
+    {
+      if(rawFile.status === 200 || rawFile.status == 0)
+      {
+        var allText = rawFile.responseText;
+        allReportsResponse[1].photos = {};
+        allReportsResponse[1].photos["photoName.png"] = allText;
+        console.log(allReportsResponse);
+      }
+    }
+  }
+  rawFile.send(null);
+});
+
 
 window.addEventListener('DOMContentLoaded', event => {
 
@@ -521,7 +541,8 @@ function sendOnClick() {
         }
         // TODO: add a check if images were uploaded
         document.getElementById("imagesAccordion").className = 'accordion-item';
-        loadImagesBanner(Http);
+        // TODO: change response to Http
+        document.getElementById("accordionImages").appendChild(loadImagesBanner(response, files));
       }
     }
 
@@ -979,7 +1000,6 @@ function createDescriptionChart(report) {
   div.className = "canvas-container";
 
   var canvas = document.createElement("canvas");
-  canvas.id = "chart_DescriptionGradesByModel";
   canvas.style.width = "100%";
   canvas.style.maxWidth = "600px";
 
@@ -1052,31 +1072,40 @@ function DivCreator(values, modelName) {
   return div;
 }
 
-function imgCreator(i) {
-  var img = document.createElement("img");
-  img.src = URL.createObjectURL(files[i]);
-  img.className = "imges-card-img-top card-img-top imagesResponse";
-  img.alt = "Card image cap";
-  return img;
+function imgCreator(files, i, fromOldReports) {
+  if (fromOldReports) {
+    file = files[i];
+    console.log(file.image);
+    return files[i].image;
+  }
+  else {
+    var img = document.createElement("img");
+    img.src = URL.createObjectURL(files[i]);
+    img.className = "imges-card-img-top card-img-top imagesResponse";
+    img.alt = "Card image cap";
+    return img;
+  }
 }
 
-function cardImagesCreator() {
+function cardImagesCreator(report, files, fromOldReports) {
   if (files != "undefined") {
     if (files.length > 0) {
-      var mainCard = document.getElementById("imagesCardsResponse");
+      console.log(files)
+      var mainCard = document.createElement("div");
+      mainCard.className = "images-card-deck";
       mainCard.innerHTML = '';
       for (let i = 0; i < files.length; i++) {
-        var quality = qualityCalculator(files[i].name)
+        var quality = qualityCalculator(report, files[i].name)
         var qualityDiv = DivCreator(quality, "Quality");
-        var brightness = brightnessCalculator(files[i].name)
+        var brightness = brightnessCalculator(report, files[i].name)
         var brightnessDiv = DivCreator(brightness, "Brightness");
-        var messyRoom = messCalculator(files[i].name)
+        var messyRoom = messCalculator(report, files[i].name)
         var messyRoomDiv = DivCreator(messyRoom, "Mess");
-        var triq = triqCalculator(files[i].name)
+        var triq = triqCalculator(report, files[i].name)
         var triqDiv = DivCreator(triq, "Triq");
         var card = document.createElement("div");
         card.className = "cardImages card"
-        var img = imgCreator(i);
+        var img = imgCreator(files, i, fromOldReports);
         card.appendChild(img);
         console.log(files[i].name);
         var cardBody = document.createElement("div");
@@ -1091,53 +1120,60 @@ function cardImagesCreator() {
         card.appendChild(cardBody);
         mainCard.appendChild(card);
       }
+      return mainCard;
     }
   }
 }
 
-function qualityCalculator(fileName) {
-  for(let i = 0; i < response.i_quality_rate.length; i++) {
+function qualityCalculator(report, fileName) {
+  console.log(report.i_quality_rate);
+  for(let i = 0; i < report.i_quality_rate.length; i++) {
     console.log("images\\" + fileName)
-    if (response.i_quality_rate[i][2] == ("images\\" + fileName)) {
-      return response.i_quality_rate[i]
+    if (report.i_quality_rate[i][2] == ("images\\" + fileName)) {
+      return report.i_quality_rate[i]
     }
   }
 }
 
-function brightnessCalculator(fileName) {
-  for(let i = 0; i < response.i_bright_rate.length; i++) {
+function brightnessCalculator(report, fileName) {
+  for(let i = 0; i < report.i_bright_rate.length; i++) {
     console.log("images\\" + fileName)
-    if (response.i_bright_rate[i][2] == ("images\\" + fileName)) {
-      return response.i_bright_rate[i]
+    if (report.i_bright_rate[i][2] == ("images\\" + fileName)) {
+      console.log('true');
+      return report.i_bright_rate[i]
     }
   }
 }
 
-function messCalculator(fileName) {
-  for(let i = 0; i < response.i_messy_rate.length; i++) {
+function messCalculator(report, fileName) {
+  for(let i = 0; i < report.i_messy_rate.length; i++) {
     console.log("images\\" + fileName)
-    if (response.i_messy_rate[i][2] == ("images\\" + fileName)) {
-      return response.i_messy_rate[i]
+    if (report.i_messy_rate[i][2] == ("images\\" + fileName)) {
+      return report.i_messy_rate[i]
     }
   }
 }
 
-function triqCalculator(fileName) {
-  for(let i = 0; i < response.i_triq_model.length; i++) {
+function triqCalculator(report, fileName) {
+  for(let i = 0; i < report.i_triq_model.length; i++) {
     console.log("images\\" + fileName)
-    if (response.i_triq_model[i][2] == ("images\\" + fileName)) {
-      return response.i_triq_model[i]
+    if (report.i_triq_model[i][2] == ("images\\" + fileName)) {
+      return report.i_triq_model[i]
     }
   }
 }
 
-function loadImagesBanner(Http) {
-  if (response.num_of_images != -1) {
+function loadImagesBanner(report, photos, fromOldReports) {
+  var div = document.createElement("div");
+  if (report.num_of_images != -1) {
     console.log("Suggest the user to add more images.");
-    document.getElementById("notEnoughImages").textContent = response.num_of_images;
+    var pNotEnoughImages = document.createElement("p")
+    pNotEnoughImages.textContent = report.num_of_images;
+    div.appendChild(pNotEnoughImages);
   }
-  cardImagesCreator();
-  imagesChart(response);
+  div.appendChild(cardImagesCreator(report, photos, fromOldReports));
+  div.appendChild(imagesChart(report));
+  return div;
 }
 
 function imagesChart(response) {
@@ -1147,7 +1183,7 @@ function imagesChart(response) {
   var messGrades = getMessGrades(response);
   var triqGrades = getTriqGrades(response);
   var qualityGrades = getQualityGrades(response);
-  createImagesChart(response, imagesLabels, brightnessGrades, messGrades, triqGrades, qualityGrades);
+  return createImagesChart(response, imagesLabels, brightnessGrades, messGrades, triqGrades, qualityGrades);
 }
 
 function getImagesLabels(response) {
@@ -1201,7 +1237,14 @@ function getQualityGrades(response) {
 }
 
 function createImagesChart(response, imagesLabels, brightnessGrades, messGrades, triqGrades, qualityGrades) {
-  new Chart("chart_ImagesGrades", {
+  var div = document.createElement("div");
+  div.className = "canvas-container";
+
+  var canvas = document.createElement("canvas");
+  canvas.style.width = "50%";
+  canvas.style.maxWidth = "600px";
+
+  new Chart(canvas, {
     type: "line",
     data: {
       labels: imagesLabels,
@@ -1235,6 +1278,9 @@ function createImagesChart(response, imagesLabels, brightnessGrades, messGrades,
       }
     }
   });
+
+  div.appendChild(canvas);
+  return div;
 }
 
 function loadAllReports(allReportsRequest) {
@@ -1485,5 +1531,34 @@ function createImagesOldReport(report) {
   imagesContent.appendChild(cardBody);
   imagesContent.appendChild(cardTitle);
 
+  photos = getPhotos(report);
+  imagesContent.appendChild(loadImagesBanner(report, photos, 1)); 
+
   return imagesContent;
+}
+
+function getPhotos(report) {
+  var photos = [];
+  for(var key in report.photos) {
+    var photo = {};
+    photo["name"] = key;
+    var base64img = getBase64Img(report, key);
+
+    Base64ToImage(base64img, photo);
+  }
+  photos.push(photo);
+  console.log(photos);
+  return photos;
+}
+
+function getBase64Img(report, key) {
+  return "data:image/png;base64," + report.photos[key];
+}
+
+function Base64ToImage(base64img, photo) {
+  var img = new Image();
+  img.src = base64img;
+  img.className = "imges-card-img-top card-img-top imagesResponse";
+  img.alt = "Card image cap";
+  photo["image"] = img;
 }
