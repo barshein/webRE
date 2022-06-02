@@ -415,6 +415,7 @@ window.addEventListener('DOMContentLoaded', event => {
         var allText = rawFile.responseText;
         allReportsResponse[1].photos = {};
         allReportsResponse[1].photos["photoName.png"] = allText;
+        allReportsResponse[1].photos["photoName1.png"] = allText;
         console.log(allReportsResponse);
       }
     }
@@ -1545,8 +1546,8 @@ function getPhotos(report) {
     var base64img = getBase64Img(report, key);
 
     Base64ToImage(base64img, photo);
+    photos.push(photo);
   }
-  photos.push(photo);
   console.log(photos);
   return photos;
 }
