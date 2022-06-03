@@ -559,7 +559,8 @@ function sendOnClick() {
 
     allReportsRequest.onreadystatechange = (e) => {
       if(allReportsRequest.readyState === XMLHttpRequest.DONE) {
-        loadAllReports(allReportsRequest);
+        var reportsResponse = eval('('+ allReportsRequest.responseText + ')');
+        loadAllReports(reportsResponse);
       }
     }
   }
@@ -846,6 +847,8 @@ loggedName+
   }
   newItem.innerHTML = signOutHTML;
   listItem.parentNode.replaceChild(newItem, listItem); 
+  document.getElementById("loggedIn").className = '';
+  document.getElementById("emailOrPasswordIncorrect").className = 'hidden';
 }
 
 function attachSignin(element) {
@@ -908,34 +911,24 @@ function verifyLogin(email, password) {
     if(Http.readyState === XMLHttpRequest.DONE) {
       console.log("response for sign in from server is:", Http.responseText)
       if (Http.responseText != 0) {
-        // TODO: when server is ready : chaneg logged name to Http.responseText - DONE?
         var loggedName = Http.responseText;
-        generalLogin(loggedName, email)
+        generalLogin(loggedName, email);
         loginWay = 'Local'
-        return true;
+        console.log("User credentials are valid! The user has logged in");    
       }
-      // TODO: can remove when the server is ready
       else {
-        return false;
+        document.getElementById("emailOrPasswordIncorrect").className = '';
+        console.log("Email or password is incorrect");    
       }
     }
   }
-  // TODO: temporary returns true (should return false) - until the server is ready
-  loginWay = 'Local'
-  return true;
 }
 
 function loginForm() {
   email = document.getElementById("email1").value;
   password = document.getElementById("password1").value;
   console.log("sign in info: {email:", email,", password:", password,"}")
-  if (verifyLogin(email, password)) {
-    document.getElementById("loggedIn").className = '';
-  }
-  else {
-    document.getElementById("emailOrPasswordIncorrect").className = '';
-    console.log("Email or password is incorrect");
-  }
+  verifyLogin(email, password);
 }
 
 function colorGradeDecider(grade) {
@@ -1290,7 +1283,7 @@ function createImagesChart(response, imagesLabels, brightnessGrades, messGrades,
 function loadAllReports(allReportsRequest) {
   // TODO: delete the following line:
   allReportsRequest = allReportsResponse;
-
+  console.log(allReportsRequest);
   console.log("There are " + Object.keys(allReportsRequest).length + " reports");
 
   if (Object.keys(allReportsRequest).length > 1) {
