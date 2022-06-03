@@ -942,26 +942,6 @@ function colorGradeDecider(grade) {
   return "red"
 }
 
-function colorBrightnessGradeDecider(grade) {
-  if (grade > 90  || grade < 30) {
-    return "red";
-  }
-  if (grade > 80 || grade < 45) {
-    return "orange";
-  }
-  return "green"
-}
-
-function colorMessGradeDecider(grade) {
-  if (grade > 85) {
-    return "red";
-  }
-  if (grade > 60) {
-    return "orange";
-  }
-  return "green"
-}
-
 function grammarDescriptionIssuesList(report) {
   if (report.grammar_model.issues && report.grammar_model.issues.length > 0) {
     var ul = document.createElement("ul");
@@ -1048,20 +1028,18 @@ function DivCreator(values, modelName) {
   div.style.textAlign = "left";
   title.style.textDecoration = "underline";
   title.style.fontSize = "larger";
-  var span = document.createElement("span");
-  span.className = "circle";
-  span.textContent = gradeNumber + "%"
   if (modelName == "Brightness") {
-    span.style.color = colorBrightnessGradeDecider(gradeNumber);
+    gradeNumber = 100 - (Math.abs(50 - gradeNumber));
   }
   else {
     if (modelName == "Mess") {
-      span.style.color = colorMessGradeDecider(gradeNumber);
-    }
-    else {
-      span.style.color = colorGradeDecider(gradeNumber);
+      gradeNumber = 100 - gradeNumber;
     }
   }
+  var span = document.createElement("span");
+  span.className = "circle";
+  span.textContent = gradeNumber + "%"
+  span.style.color = colorGradeDecider(gradeNumber);
   var comment = document.createElement("p");
   comment.textContent = commentValue;
   div.appendChild(title);
@@ -1202,6 +1180,7 @@ function getBrightnessGrades(response) {
   var brightnessGrades = [];
   for(let i = 0; i < response.i_bright_rate.length; i++) {
     grade = Math.round(response.i_bright_rate[i][0] * 100);
+    grade = 100 - (Math.abs(50 - grade));
     brightnessGrades.push(grade);
   }
   return brightnessGrades;
@@ -1211,6 +1190,7 @@ function getMessGrades(response) {
   var messGrades = [];
   for(let i = 0; i < response.i_messy_rate.length; i++) {
     grade = Math.round(response.i_messy_rate[i][0] * 100);
+    grade = 100 - grade;
     messGrades.push(grade);
   }
   return messGrades;
