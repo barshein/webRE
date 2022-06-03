@@ -71,7 +71,7 @@ def getReportsData():
         print("send to api server - get reports ")
         res = requests.post("http://127.0.0.1:5050/getAllReports", json=json)
         print("return reports in communication server ")
-        return res
+        return res.text
     return my_form()
 
 
