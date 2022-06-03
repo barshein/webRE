@@ -25,12 +25,12 @@ response = {
       [
           0.4996707818930042,
           "desc",
-          "images\\2.png"
+          "images\\ffd.png"
       ],
       [
           0.6840084388185653,
           "desc",
-          "images\\3.png"
+          "images\\ffd1.png"
       ],
       [
           0.40434782608695646,
@@ -77,12 +77,12 @@ response = {
       [
           0.9259664416313171,
           "desc",
-          "images\\2.png"
+          "images\\ffd.png"
       ],
       [
           0.1190466582775116,
           "desc",
-          "images\\3.png"
+          "images\\ffd1.png"
       ],
       [
           0.6015366315841675,
@@ -129,12 +129,12 @@ response = {
     [
         0.4996707818930042,
         "desc",
-        "images\\2.png"
+        "images\\ffd.png"
     ],
     [
         0.6840084388185653,
         "desc",
-        "images\\3.png"
+        "images\\ffd1.png"
     ],
     [
         0.40434782608695646,
@@ -181,12 +181,12 @@ response = {
     [
         0.5996707818930042,
         "desc",
-        "images\\2.png"
+        "images\\ffd.png"
     ],
     [
         0.7140084388185653,
         "desc",
-        "images\\3.png"
+        "images\\ffd1.png"
     ],
     [
         0.40434782608695646,
@@ -560,6 +560,7 @@ function sendOnClick() {
     allReportsRequest.onreadystatechange = (e) => {
       if(allReportsRequest.readyState === XMLHttpRequest.DONE) {
         var reportsResponse = eval('('+ allReportsRequest.responseText + ')');
+        console.log(reportsResponse);
         loadAllReports(reportsResponse);
       }
     }
