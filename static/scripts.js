@@ -279,7 +279,7 @@ allReportsResponse = {
           "images\\photoName1.png"
       ]
   ],
-    "grammar_model": {'issues': ['Possible spelling mistake found.', 'This sentence does not start with an uppercase letter.'], 'main_response': 'Please notice several grammar corrections', 'grade': 55, 'replacement_description': 'The apartment is big and beautiful, you should come see it'},
+    "grammar_model": {'issues': ['Possible spelling mistake found.', 'This sentence does not start with an uppercase letter.'], 'main_response': 'Please notice several grammar corrections', 'grade': 46, 'replacement_description': 'The apartment is big and beautiful, you should come see it'},
     "semantic_model": [0.8119215686274509,
       "semantic main response"],
     "punctuation_model": [0.9619215686274509,
@@ -536,16 +536,22 @@ function sendOnClick() {
       if(Http.readyState === XMLHttpRequest.DONE) {
         document.getElementById("responseSpinner").className = 'hidden';
         console.log("response from server is:", Http.responseText)
+        var isDescription = 0;
+        var isImages = 0;
         if (descriptionFromUser != "undefined" && descriptionFromUser != "") {
+          isDescription = 1;
           document.getElementById("descriptionAccordion").className = 'accordion-item';
           loadDescriptionBanner(Http);
         }
-        // TODO: add a check if images were uploaded
-        document.getElementById("imagesAccordion").className = 'accordion-item';
-        // TODO: change response to Http
-        accordionImages = document.getElementById("accordionImages");
-        accordionImages.innerHTML = '';
-        accordionImages.appendChild(loadImagesBanner(response, files));
+        if (files.length != 0) {
+          isImages = 1;
+          document.getElementById("imagesAccordion").className = 'accordion-item';
+          // TODO: change response to Http
+          accordionImages = document.getElementById("accordionImages");
+          accordionImages.innerHTML = '';
+          accordionImages.appendChild(loadImagesBanner(response, files));
+        }
+        document.getElementById("reportGrade").appendChild(reportGrade(response, isDescription, isImages));
       }
     }
 
@@ -1356,16 +1362,32 @@ function createTabContent(allReportsRequest, reportIdx, lastReportIdx) {
   return div;
 }
 
+function isDescriptionOldReports(report) {
+  if (report.description != "undefined" && report.description != "") {
+    return 1;
+  }
+  return 0;
+}
+
+function isImagesOldReports(report) {
+  if (report.photos != "undefined" && !(Object.keys(report.photos).length === 0)) {
+    return 1;
+  }
+  return 0;
+}
+
 function createOldReportContent(report) {
   console.log(report);
   var pageContent = document.createElement("div");
   pageContent.className = "images-card-deck-reports accordion-body";
 
-  if (report.description != "undefined" && report.description != "") {
+  pageContent.appendChild(reportGrade(report, isDescriptionOldReports(report), isImagesOldReports(report)));
+
+  if (isDescriptionOldReports(report)) {
     descriptionContent = createDescriptionOldReport(report);
     pageContent.appendChild(descriptionContent);
   }
-  if (report.photos != "undefined" && !(Object.keys(report.photos).length === 0)) {
+  if (isImagesOldReports(report)) {
     imagesContent = createImagesOldReport(report);
     pageContent.appendChild(imagesContent);  
   }
@@ -1539,4 +1561,65 @@ function Base64ToImage(base64img, photo) {
   img.className = "imges-card-img-top card-img-top imagesResponse";
   img.alt = "Card image cap";
   photo["image"] = img;
+}
+
+function reportGrade(report, isDescription, isImages) {
+  var span = document.createElement("span");
+  span.className = "bigCircle";
+  gradeNumber = Math.round(calculatesReportGrade(report, isDescription, isImages));
+  span.textContent = gradeNumber + "%"
+  span.style.color = colorGradeDecider(gradeNumber);
+
+  return span;
+}
+
+function calculatesReportGrade(report, isDescription, isImages) {
+  if (isDescription + isImages == 0) {
+    return 0;
+  } 
+  else {
+    var allGrades = [];
+    if (isDescription) {
+      allGrades.push(report.grammar_model.grade);
+      allGrades.push(Math.round(report.semantic_model[0] * 100));
+      allGrades.push(Math.round(report.punctuation_model[0] * 100));  
+    }
+    if (isImages) {
+      allGrades.push(getBrightnessAverage(report));
+      allGrades.push(getMessAverage(report));
+      allGrades.push(getTriqAverage(report));
+      allGrades.push(getQualityAverage(report));  
+    }
+    
+    console.log(allGrades);
+    return calculateAverage(allGrades);
+  }
+}
+
+function calculateAverage(grades) {
+  var sum = 0;
+  for(let i = 0; i < grades.length; i++) {
+    sum = sum + grades[i];
+  }
+  return sum/grades.length;
+}
+
+function getBrightnessAverage(report) {
+  brightnessGrades = getBrightnessGrades(report);
+  return calculateAverage(brightnessGrades);
+}
+
+function getMessAverage(report) {
+  messGrades = getMessGrades(report);
+  return calculateAverage(messGrades);
+}
+
+function getTriqAverage(report) {
+  triqGrades = getTriqGrades(report);
+  return calculateAverage(triqGrades);
+}
+
+function getQualityAverage(report) {
+  qualityGrades = getQualityGrades(report);
+  return calculateAverage(qualityGrades);
 }
