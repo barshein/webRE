@@ -1378,10 +1378,14 @@ function isImagesOldReports(report) {
 
 function createOldReportContent(report) {
   console.log(report);
+
+  fullPage = document.createElement("div");
+  fullPage.style.textAlign = "center";
+  fullPage.appendChild(document.createElement('br'));
+  fullPage.appendChild(reportGrade(report, isDescriptionOldReports(report), isImagesOldReports(report)));
+
   var pageContent = document.createElement("div");
   pageContent.className = "images-card-deck-reports accordion-body";
-
-  pageContent.appendChild(reportGrade(report, isDescriptionOldReports(report), isImagesOldReports(report)));
 
   if (isDescriptionOldReports(report)) {
     descriptionContent = createDescriptionOldReport(report);
@@ -1391,7 +1395,9 @@ function createOldReportContent(report) {
     imagesContent = createImagesOldReport(report);
     pageContent.appendChild(imagesContent);  
   }
-  return pageContent;
+
+  fullPage.appendChild(pageContent);
+  return fullPage;
 }
 
 function createDescriptionOldReport(report) {
