@@ -1,1 +1,1 @@
-web: gunicorn communication:comm
+worker: sh -c 'communicationServer && apiServer'
