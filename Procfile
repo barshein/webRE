@@ -1,1 +1,1 @@
-worker: python common.py
+web: gunicorn communicationServer:comm
