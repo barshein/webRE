@@ -1,1 +1,1 @@
-worker: sh -c 'communicationServer && apiServer'
+worker: python common.py
