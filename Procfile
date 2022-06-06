@@ -1,1 +1,2 @@
-web: gunicorn common:app --log-file -
+web: gunicorn apiServer:api
+web: gunicorn communication:comm
