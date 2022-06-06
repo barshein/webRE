@@ -13,7 +13,8 @@ def saveData():
     description, photos = mongodb.getDataBySessionId(json["sessionId"])
     data["description"] = description
     data["photos"] = photos
-    res = requests.post("http://127.0.0.1:4040", json=data)
+    # res = requests.post("http://127.0.0.1:4040", json=data)
+    res = requests.post("http://ec2-3-95-56-180.compute-1.amazonaws.com:8000", json=data)
     print("res in api server - " + str(res.text))
     email = json["email"]
     print("api server update user : " + str(email) + " data")
