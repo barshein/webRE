@@ -114,6 +114,8 @@ def getAllReports(email):
   reportsJson = {}
   sessions = json.loads(getCustomerSessionsByEmail(email))
   sessionIDs = list(sessions.keys())
+  if len(sessionIDs) == 0:
+    return reportsJson
   sessionIDsList = [int(i) for i in sessionIDs]
   sessionIDsList = sorted(sessionIDsList)
   sessionIdCounter = 0
